@@ -1,6 +1,6 @@
 <template>
   <div class="table">
-    <table class="table__wrapper">
+    <table class="table__wrapper" cellpadding="0" cellspacing="0" border="0">
        <thead>
           <tr class="table__head" >
             <th></th>
@@ -115,6 +115,7 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 20px;
+  overflow-y: auto;
 }
 
 

@@ -1,32 +1,112 @@
 <template>
+
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <component :is="layout">
+      <router-view/>
+    </component>
+
   </div>
+
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+import MainLayout from './layouts/MainLayout'
+export default {
+  computed: {
+    layout() {
+      console.log(this.$route.meta)
+      return (this.$route.meta.layout || 'main') + '-layout'
+    }
+  },
+  components: {
+    MainLayout
+  }
+}
+</script>
+
+<style>
+body {
+  background: #000000;
+  margin: 0;
+  padding: 0;
+  color: white;
+  font-family: "Raleway", sans-serif;
+
+  font-weight: 100;
 }
 
-#nav {
-  padding: 30px;
+div,
+p,
+img,
+a,
+form {
+  box-sizing: border-box;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+ul,
+li {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.hat {
+  margin: 20px;
+  height: 40px;
+  padding: 0;
+}
+
+.logo {
+  margin: auto;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  float: left;
+  height: 100%;
+  width: 15%;
+  font-size: 1.2em;
+}
+
+.logo img {
+  display: flex;
+  height: 40px;
+  width: 50px;
+}
+.logo p {
+  margin: auto;
+  margin-left: 0;
+}
+
+.menu {
+  display: flex;
+  float: right;
+  width: 70%;
+  height: 100%;
+}
+
+.menu li {
+  margin: auto;
+  text-align: center;
+}
+.menu a {
+  color: white;
+  margin: 10px;
+  transition: all 0.2s ease;
+}
+.menu a:hover {
+  color: #1a87a8;
+}
+
+#log_out {
+  margin-left: 50px;
+}
+
+.new {
+  width: 500px;
+  height: 500px;
+  background: red;
 }
 </style>

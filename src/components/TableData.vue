@@ -1,6 +1,39 @@
 <template>
   <div class="table">
-    <table class="table__wrapper" cellpadding="0" cellspacing="0" border="0">
+    <div class="table__header">
+      <ul>
+        <li></li>
+        <li 
+          v-for="column in tablecolumns"
+          :key="column.label"
+          > {{column.label}}
+        </li>
+      </ul>
+    </div>
+    <div class="table__content">
+      <ul
+        v-for="(row, i) of rows"
+        v-bind:key="i"
+      >
+        <li>{{i+1}}</li>
+        <li>{{row.time_stamp}}</li>
+        <li>{{row.event_discription}}</li>
+        <li>{{row.host}}</li>
+        <li>{{row.host_name}}</li>
+        <li>{{row.user_name}}</li>
+        <li>{{row.src_ip}}</li>
+        <li>{{row.dst_ip}}</li>
+        <li>{{row.dst_port}}</li>
+        <li>{{row.program}}</li>
+      </ul>
+    </div>
+    <div class="table__pagination pafination">
+      <div class="pagination__arrow"></div>
+      <div class="pagination__number">XX</div>
+      <div class="pagination__arrow"></div>
+    </div>
+
+    <!-- <table class="table__wrapper" cellpadding="0" cellspacing="0" border="0">
        <thead>
           <tr class="table__head" >
             <th></th>
@@ -8,7 +41,7 @@
               v-for="column in tablecolumns"
               :key="column.label"
               > {{column.label}}
-              <!-- <span>{{column.label}}</span> -->
+              
             </th>
           </tr>
       </thead>
@@ -30,7 +63,7 @@
           <td>{{row.program}}</td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
   </div>
 </template>
 
@@ -65,11 +98,55 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+
   .table {
     /* margin: 0 20px 20px 20px; */
     overflow: hidden;
     height: 100%;
+    width: 100%;
+    text-align: center;
+
+    &__header {
+
+      ul {
+        display: flex;
+        justify-content: space-around;
+        list-style-type: none;
+        padding: 0;
+
+        li {
+          width: 10%;
+        }
+      }
+
+    }
+
+    &__content {
+      overflow-y: auto;
+      height: 100%;
+      
+      ul {
+        display: flex;
+        justify-content: space-around;
+        list-style-type: none;
+        padding: 0;
+        border-bottom: 1px solid white;
+
+        li {
+          width: 10%;
+        }
+      }
+
+    }
+
+    &__pagination {
+
+    }
   }
 
   .table__wrapper {
@@ -108,15 +185,15 @@ export default {
   }
 
   .table_div {
-  background: #0000005d;
-  margin-top: 10px;
-  /* padding-top: 20px; */
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 20px;
-  overflow-y: auto;
-}
+    background: #0000005d;
+    margin-top: 10px;
+    /* padding-top: 20px; */
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    overflow-y: auto;
+  }
 
 
 .table_div table {
@@ -129,7 +206,7 @@ export default {
 .table_div th {
   padding-bottom: 10px;
   text-align: center;
-  font-weight: lighter;
+  /* font-weight: lighter; */
   border-bottom: 1px solid #ffffff49;
   width: 7%;
 }
@@ -142,4 +219,5 @@ export default {
 .tr_hover:hover {
   background: darkviolet;
 }
+
 </style>

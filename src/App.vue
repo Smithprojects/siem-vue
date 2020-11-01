@@ -46,12 +46,13 @@ form {
   padding: 0;
 }
 
-/* ul,
+ul,
 li {
-  display: block;
+  /* display: block; */
+  list-style-type: none;
   margin: 0;
   padding: 0;
-} */
+}
 
 
 

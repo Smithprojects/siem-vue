@@ -10,8 +10,9 @@
         </li>
       </ul>
     </div>
-    <div class="table__content">
-      <ul
+    <div class="table__wrapper">
+      <div class="table__content">
+        <ul
         v-for="(row, i) of rows"
         v-bind:key="i"
       >
@@ -26,44 +27,17 @@
         <li>{{row.dst_port}}</li>
         <li>{{row.program}}</li>
       </ul>
+      </div>
     </div>
-    <div class="table__pagination pafination">
-      <div class="pagination__arrow"></div>
+    <div class="table__pagination pagination">
+      <div class="pagination__arrow">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      </div>
       <div class="pagination__number">XX</div>
-      <div class="pagination__arrow"></div>
+      <div class="pagination__arrow">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+      </div>
     </div>
-
-    <!-- <table class="table__wrapper" cellpadding="0" cellspacing="0" border="0">
-       <thead>
-          <tr class="table__head" >
-            <th></th>
-            <th 
-              v-for="column in tablecolumns"
-              :key="column.label"
-              > {{column.label}}
-              
-            </th>
-          </tr>
-      </thead>
-      <tbody>
-        <tr class="tr_hover" 
-          v-for="(row, i) of rows"
-          v-bind:key="i"
-          v-on:click="$emit('enable-description', user.id)"
-          >
-          <td>{{i+1}}</td>
-          <td>{{row.time_stamp}}</td>
-          <td>{{row.event_discription}}</td>
-          <td>{{row.host}}</td>
-          <td>{{row.host_name}}</td>
-          <td>{{row.user_name}}</td>
-          <td>{{row.src_ip}}</td>
-          <td>{{row.dst_ip}}</td>
-          <td>{{row.dst_port}}</td>
-          <td>{{row.program}}</td>
-        </tr>
-      </tbody>
-    </table> -->
   </div>
 </template>
 
@@ -105,119 +79,97 @@ export default {
   }
 
   .table {
-    /* margin: 0 20px 20px 20px; */
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     height: 100%;
     width: 100%;
+    margin-top: 10px;
+    border-radius: 20px;
+    background: #0000005d;
     text-align: center;
+    overflow: hidden;
 
     &__header {
 
       ul {
         display: flex;
         justify-content: space-around;
-        list-style-type: none;
-        padding: 0;
+        padding: 20px 0;
+        margin: 0px 3%;
+        border-bottom: 1px solid rgba(255,255,255,0.5);
 
         li {
           width: 10%;
+                   
+          &:first-child {
+            width: 3%;
+          }
+
+          &:nth-child(2) {
+            width: 12%;
+          }
         }
       }
-
     }
 
-    &__content {
-      overflow-y: auto;
-      height: 100%;
+    &__wrapper {
+      // overflow-y: auto;
+      height: 80%;
+      // scrollbar-width: none;
       
       ul {
         display: flex;
         justify-content: space-around;
-        list-style-type: none;
-        padding: 0;
-        border-bottom: 1px solid white;
+        padding: 10px 0px;
+        margin: 0 3%;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
 
         li {
           width: 10%;
+          font-size: 14px;
+
+          &:first-child {
+            width: 3%;
+          }
+
+          &:nth-child(2) {
+            width: 12%;
+          }
         }
       }
-
     }
 
-    &__pagination {
+    &__content {
+      scrollbar-width: none;
+      overflow-y: auto;
+      max-height: 100%;
+      height: 100%;
 
+      ul:hover {
+        background: rgba(9, 1, 12, 0.589);
+        border-bottom: 2px solid rgb(243, 17, 205);
+      }
     }
-  }
 
-  .table__wrapper {
-    /* background: #0000005d; */
-    padding: 40px;
-    display: block;
-    border-radius: 20px;
-    border-collapse: collapse;
-    overflow-y: auto;
-    max-height: 100%;
-    height: 100%;
-  }
-
-  .table__wrapper th {
-    font-size: 16px;
-    padding-bottom: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ffffff49;
-    width: 7%;
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 5%;
       
+      &__arrow {
+        margin: 0 20px;
+        cursor: pointer;
+      }
+
+      &__number {
+        border: 1px solid white;
+        border-radius: 3px;
+        padding: 5px 10px;
+      }
+    }
   }
 
-  .table__wrapper tr {
-    border-bottom: 1px solid #ffffff49;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  .table__wrapper td {
-    padding: 0px 0px;
-  }
-
-  .tr_hover:hover {
-    background: rgba(148, 0, 211, 0.589);
-    border-bottom: 2px solid rgb(243, 17, 205);
-  }
-
-  .table_div {
-    background: #0000005d;
-    margin-top: 10px;
-    /* padding-top: 20px; */
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    overflow-y: auto;
-  }
-
-
-.table_div table {
-  border-collapse: collapse;
-  /* margin: 10px auto; */
-  font-size: 0.7em;
-  /* width: 95%; */
-}
-
-.table_div th {
-  padding-bottom: 10px;
-  text-align: center;
-  /* font-weight: lighter; */
-  border-bottom: 1px solid #ffffff49;
-  width: 7%;
-}
-
-.table_div tr {
-  border-bottom: 1px solid #ffffff49;
-  text-align: center;
-}
-
-.tr_hover:hover {
-  background: darkviolet;
-}
 
 </style>

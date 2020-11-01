@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import filters from './modules/filters'
+import rows from './modules/rows'
 
 Vue.use(Vuex)
 
@@ -11,6 +12,7 @@ export default new Vuex.Store({
   getters: {},//трансформируем данные и получаем из stote
 
   modules: {
-    filters
+    filters,
+    rows
   } //декомпозирует
 })

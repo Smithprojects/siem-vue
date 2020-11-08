@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import filters from './modules/filters'
-import rows from './modules/rows'
+import rows from './modules/data'
 
 Vue.use(Vuex)
 

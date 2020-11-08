@@ -2,11 +2,11 @@ export default {
   actions: {},
   mutations: {},
   state: {
-    filters: []
+    // filters: []
   },
   getters: {
-    allFilters(state) {
-      return state.filters
-    }
+    // allFilters(state) {
+    //   return state.filters
+    // }
   }
 }

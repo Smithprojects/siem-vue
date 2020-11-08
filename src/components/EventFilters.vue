@@ -3,8 +3,8 @@
         <div class="search__form">
             <form class="search__form__events" action="" method="">
                 <div class="search__wrapper fa fa-search">
-                <input class="search__wrapper__input" type="saerch" placeholder="search">
-                <i v-on:click="btn = !btn" class="search__wrapper__cursor filters__wrapper__cursor filters__wrapper__cursor_green fa fa-sliders"></i>
+                  <input class="search__wrapper__input" type="saerch" placeholder="search">
+                  <i v-on:click="btn = !btn" class="search__wrapper__cursor filters__wrapper__cursor filters__wrapper__cursor_green fa fa-sliders"></i>
                 </div>
             </form>
         </div>
@@ -15,33 +15,41 @@
           </div>
           <Filters
           :filters="filters"
-          :placeholder="'Filters Name-1'"
-          @change="choceFilter"
+          :placeholder="'Choices filters'"
+          @change="choceFilterName"
           />
           <Filters
           :filters="filtersTwo"
-          :placeholder="'Filters Name-2'"
+          :placeholder="'Choice parameter'"
+          @change="choceFilterValue"
           />
+          <div class="filters__add"
+            @click="addFilter"
+          >
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </div>
         </div>
         <!-- конец блока выбора фильтров -->
 
         <!-- блок отображения активных фильтров -->
         <transition name="fade">
-          <div  v-if="btn" class="show__filters filters__active filters">
+          <div  v-if="btn" class="show__filters filters__active filters" >
               <div class="show__filters__head filters__head ">
                   <p class="filters__head_p">Filter:</p>
               </div>
-              <div v-bind:class="{active: filtersTwo.active }" class="show__filters__wrapper show__filters__wrapper_purple">
-                  <i class="filters__wrapper__cursor fa fa-close"></i>
-                  Sorce ip:{{filtersTwo.name}}
+      
+              <div v-for="filter of requestFilter"
+                :key="filter.id"
+                :class="filter.active ? 'active':''"
+                :style="{'background-color':filter.color}"
+                class="show__filters__wrapper show__filters__wrapper_green"
+                
+              >
+                <i class="filters__wrapper__cursor fa fa-close"></i>
+                  Sorce country: {{filter.name}} {{filter.value}}
               </div>
-              <div v-for="filter of filters"
-                    :key="filter.id"
-                    :class="filter.active ? 'active':'blue'"
-                    :style="{'background-color':filter.color}"
-                    class="show__filters__wrapper show__filters__wrapper_green">
-                  <i class="filters__wrapper__cursor fa fa-close"></i>
-                  Sorce country: {{filter.name}} {{filter.color}}
+              <div class="filters__delete">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
               </div>
           </div>
         </transition>
@@ -53,45 +61,102 @@
 import Filters from './Filters';
 // import FilterOptions from  './FilterOptions';
 export default {
-    name : 'search',
-    components : {
-        // FilterOptions,
-        Filters
-    },
-    data(){
-        return{
-            btn : false,
-            filterModel : [],
-            filters : [
-              {id: 1, name: "Source country 1", active: false, color: "#6957b8"},
-              {id: 2, name: "Source country 2", active: false, color: "#077233"},
-              {id: 3, name: "Source country 3", active: false, color: "#6957b8"},
-              {id: 4, name: "Source country 4", active: false, color: "#077233"},
-              {id: 5, name: "Source country 5", active: false, color: "#ccc"},
-
-            ],
-            filtersTwo : [
-              {id: 1, name: "Russia 1", active: false},
-              {id: 2, name: "Russia 2", active: false},
-              {id: 3, name: "Russia 3", active: false},
-              {id: 4, name: "Russia 4", active: false},
-              {id: 5, name: "Russia 5", active: false},
-
-            ],
-            // placeholder: ""
-        }
-    },
-    methods: {
-      onSubmit() {
-        // v-on:click="filter.active = !filter.active"
-        console.log("filtre:")
-
-      },
-      // choceFilter(value) {
-
-      // }
+  name : 'search',
+  components : {
+      // FilterOptions,
+      Filters
+  },
+  props: {
+    allFilters: {
+      type: [Object, Array],
+      required: true
     }
+  },
+  computed: {
+ 
+  },
+  data(){
+    return{
+      btn : false,
+      filterModel : [],
+      filters : [
+        {id: 1, name: "Host", atr: 'list_hosts', active: false, color: "#6957b8"},
+        {id: 2, name: "Host name", atr: 'list_host_names', active: false, color: "#077233"},
+        {id: 3, name: "User name", atr: 'list_user_name', active: false, color: "#6957b8"},
+        {id: 3, name: "Program", atr: 'list_programs', active: false, color: "#6957b8"},
+        {id: 4, name: "Source IP", atr: 'list_src_ips', active: false, color: "#077233"},
+        {id: 5, name: "Dest IP", atr: 'list_dst_ips', active: false, color: "#ccc"},
+        {id: 6, name: "Dest port", atr: 'list_dst_port', active: false, color: "#ccc"},
+      ],
+      filtersTwo : [
+        {id: 1, name: "Russia 1", active: false},
+        {id: 2, name: "Russia 2", active: false},
+        {id: 3, name: "Russia 3", active: false},
+        {id: 4, name: "Russia 4", active: false},
+        {id: 5, name: "Russia 5", active: false},
 
+      ],
+      requestFilter : [],
+      // placeholder: ""
+    }
+  },
+  methods: {
+    onSubmit() {
+      // v-on:click="filter.active = !filter.active"
+      console.log("filtre:")
+
+    },
+    choceFilterName(value) {
+
+      const atrName = this.filters
+        .filter(filter => filter.name==value)[0].atr
+        
+      this.filtersTwo = this.allFilters[atrName]
+        .map(filter => {
+          return {
+            name: filter
+          }
+        })
+
+      // const atrName2 = atrName.replace(/^list_\//, '');
+      this.requestFilter.push({
+        name: value, 
+        atr: atrName.substr(5)
+      })
+
+       
+      // this.requestFilter.name = atrName.substr(5)
+    
+      
+
+      console.log('test5', this.requestFilter)
+    },
+    choceFilterValue(value) {
+        // this.requestFilter.value = value
+        // this.requestFilter.active = false
+        // this.requestFilter = this.requestFilter
+        //   .map(filter => {
+        //     return {
+        //       value: value,
+        //       active: false
+        //     }
+        //   })
+
+        for (let filter of this.requestFilter) {
+          filter.value = value
+          
+        }
+        console.log('test6', this.requestFilter)
+    },
+    addFilter() {
+      for (let filter of this.requestFilter) {
+        filter.active = true
+      }
+      console.log('test7', this.requestFilter)
+      
+      
+    }
+  }
 }
 
 </script>
@@ -193,6 +258,10 @@ position: relative;
   text-align: left;
 }
 
+.filters__add {
+  cursor: pointer;
+}
+
 .filters__head_p {
     padding: 5px 0;
 }
@@ -201,6 +270,12 @@ position: relative;
   margin-right: 5px;
   position: relative;
   border-radius: 5px;
+}
+
+.filters__add, .filters__delete {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
 }
 
 .filters__wrapper:hover {

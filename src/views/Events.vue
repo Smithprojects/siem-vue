@@ -4,15 +4,18 @@
         <p>Events</p>
     </div>
     <div class="events__filter">
-      <EventFilters />
+      <EventFilters 
+        :allFilters="allFilters"
+      />
     </div>
     
     <div class="events__table ">
       <TableData 
         :tablecolumns="tablecolumns"
         :rows="allRows"
+        :meta="allMeta"
         :placeholder="'Filters Name-1'"
-        @change="choceFilter"
+        
       />
     </div>
   </div>
@@ -35,8 +38,8 @@ export default {
         {name: 'event', label: 'Event'},
         {name: 'host', label: 'Host'},
         {name: 'host_name', label: 'Host name'},
-        {name: 'src_ip', label: 'Source IP'},
         {name: 'user_name', label: 'User name'},
+        {name: 'src_ip', label: 'Source IP'},
         {name: 'dest_ip', label: 'Dest ip'},
         {name: 'dest_port', label: 'Dest port'},
         {name: 'program', label: 'Program'},
@@ -50,15 +53,15 @@ export default {
       ]
     };
   },
-  computed: mapGetters(["allRows"]),
+  computed: mapGetters(["allRows", "allFilters", "allMeta"]),
   // computed: {
   //   allRows() {
   //     return this.$store.getters.allRows
   //   }
   // },
-  methods: mapActions(["fetchRows"]),
+  methods: mapActions(["fetchData"]),
   async mounted() {
-    this.fetchRows();
+    this.fetchData();
   }
 };
 </script>

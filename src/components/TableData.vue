@@ -33,7 +33,7 @@
       <div class="pagination__arrow">
         <i class="fa fa-arrow-left" aria-hidden="true"></i>
       </div>
-      <div class="pagination__number">XX</div>
+      <div class="pagination__number">{{meta.page}}</div>
       <div class="pagination__arrow">
         <i class="fa fa-arrow-right" aria-hidden="true"></i>
       </div>
@@ -52,8 +52,12 @@ export default {
       required: true
     },
     rows: {
-      type: Object,
+      type: [Object, Array],
       required: true
+    },
+    meta: {
+      type: [Object, Array],
+      required: false
     }
   },
   methods: {
@@ -161,12 +165,23 @@ export default {
       &__arrow {
         margin: 0 20px;
         cursor: pointer;
+
+        &:hover {
+          color: rgb(243, 17, 205);
+        }
+        
       }
 
       &__number {
         border: 1px solid white;
         border-radius: 3px;
         padding: 5px 10px;
+        cursor: pointer;
+
+        &:hover {
+          background: rgba(9, 1, 12, 0.589);
+          border: 2px solid rgb(243, 17, 205);
+        }
       }
     }
   }

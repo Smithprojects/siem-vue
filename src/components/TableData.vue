@@ -57,7 +57,7 @@ export default {
     },
     meta: {
       type: [Object, Array],
-      required: false
+      required: true
     }
   },
   methods: {

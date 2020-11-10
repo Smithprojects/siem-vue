@@ -1,14 +1,77 @@
 <template>
-    <div class="search" >
-        <!-- <div class="search__form "> -->
+
+    <div class="filtering">
+      <div class="filtering__search search">
+
+      
+          <form class="search__form form" action="" method="">
+            <div class="form__wrapper fa fa-search">
+              <input class="form__input" type="saerch" placeholder="search">
+              <i v-on:click="btn = !btn" class="search__wrapper__cursor form__fa-img form__fa-img_green fa fa-sliders"></i>
+            </div>
+          </form>
+      
+      </div>
+      <div v-if="btn" class="filtering__filters ">
+        <div class="filters__add filters">
+          <div class="filters__head">
+            <p class="filters__title">Add filter:</p>
+          </div>
+          <div class="filters__">
+            <Filters
+            :filters="filters"
+            
+            @change="choceFilterName"
+            />
+            <Filters
+            :filters="filtersTwo"
+            
+            @change="choceFilterValue"
+            />
+            <div class="filters__btn"
+              @click="addFilter"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      
+         
+        <div class="filters__show filters">
+          <!-- <div  class="show__filters filters__active" > -->
+            <div class="filters__head ">
+                <p class="filters__title">Filter:</p>
+            </div>
+    
+            <div v-for="filter of requestFilter"
+              :key="filter.id"
+              :class="filter.active ? 'active':''"
+              :style="{'background-color':filter.color}"
+              class="show__filters__wrapper show__filters__wrapper_green"
+            >
+              <i class="form__fa-img fa fa-close"></i>
+                Sorce country: {{filter.name}} {{filter.value}}
+            </div>
+            <div class="filters__btn">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </div>
+          <!-- </div> -->
+        </div>
+      
+      </div>
+    
+    </div>
+    
+    <!-- <div class="search" >
+        
         <form class="search__form form" action="" method="">
           <div class="form__wrapper fa fa-search">
             <input class="form__input" type="saerch" placeholder="search">
             <i v-on:click="btn = !btn" class="search__wrapper__cursor form__fa-img form__fa-img_green fa fa-sliders"></i>
           </div>
         </form>
-        <!-- </div> -->
-        <!-- блок выбора фильтров -->
+       
+     
         <div v-if="btn" class="search__filters filters">
           <div class="filters__head">
             <p class="filters__title">Add filter:</p>
@@ -29,10 +92,8 @@
             <i class="fa fa-plus" aria-hidden="true"></i>
           </div>
         </div>
-        <!-- конец блока выбора фильтров -->
-
-        <!-- блок отображения активных фильтров -->
-        <transition name="fade">
+     
+      
           <div  v-if="btn" class="show__filters filters__active filters" >
               <div class="show__filters__head filters__head ">
                   <p class="filters__head_p">Filter:</p>
@@ -52,9 +113,9 @@
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
               </div>
           </div>
-        </transition>
-        <!-- конец блок отображения активных фильтров -->
-    </div>
+      
+       
+    </div> -->
 </template>
 
 <script>
@@ -163,12 +224,93 @@ export default {
 
 <style lang="scss">
 
-.search {
+.filtering {
   background:#0000005d;
   border-radius: 15px;
   text-align: center;
   padding: 10px;
   max-height: 165px;
+
+  &__search {
+
+  }
+
+  
+}
+
+.form__fa-img {
+      position:absolute;
+      top: 0;
+      bottom: 0;
+      right: 8px;
+      margin: auto;
+      height: 50%;
+      font-size: 13px;
+      cursor: pointer;
+
+      &_green {
+        color: #0e4050;
+        top: -9px;
+        font-size: 23px;
+      }
+    }
+
+.filters {
+  display: flex;
+  padding-top: 10px;
+  flex-wrap: wrap;
+  /* animation: filterOpacityOff 2s linear; */
+  /* opacity: 0; */
+  /* transition: all 1s ease; */
+  /* visibility: hidden; */
+  /* animation: filterOpacityOn 2s linear; */
+    /* visibility: visible !important;
+    display: none; */
+
+  &__head {
+    color: #1a87a8;
+    font-size: 15px;
+    padding-right: 20px;
+    width: 100px;
+    text-align: left;
+  }
+
+  &__title {
+    padding: 5px 0;
+  }
+
+  &__add {
+    // display: flex;
+  
+  }
+
+  &__btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+
+  &__wrapper {
+    margin-right: 5px;
+    position: relative;
+    border-radius: 5px;
+    min-width: 124px;
+
+    &:hover {
+      border: 1px solid white;
+      transition: all 1s ease;
+      border-radius: 5px;
+    }
+  } 
+}
+
+.search {
+  // background:#0000005d;
+  // border-radius: 15px;
+  // text-align: center;
+  // padding: 10px;
+  // max-height: 165px;
 
   &__form {
    
@@ -229,6 +371,9 @@ export default {
 
   }
 
+  
+  
+
   &__show {
 
   }
@@ -256,69 +401,6 @@ export default {
 
 .search__wrapper__cursor:hover {
   color: #1a87a8;
-}
-
-.filters {
-  display: flex;
-  padding-top: 10px;
-  flex-wrap: wrap;
-  /* animation: filterOpacityOff 2s linear; */
-  /* opacity: 0; */
-  /* transition: all 1s ease; */
-  /* visibility: hidden; */
-  /* animation: filterOpacityOn 2s linear; */
-    /* visibility: visible !important;
-    display: none; */
-
-  &__head {
-    color: #1a87a8;
-    font-size: 15px;
-    padding-right: 20px;
-    width: 100px;
-    text-align: left;
-  }
-
-  &__title {
-    padding: 5px 0;
-  }
-
-  &__add-btn, &__delete-btn {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
-  }
-
-  &__wrapper {
-    margin-right: 5px;
-    position: relative;
-    border-radius: 5px;
-    min-width: 124px;
-
-    &:hover {
-      border: 1px solid white;
-      transition: all 1s ease;
-      border-radius: 5px;
-    }
-  } 
-}
-
-.filters__wrapper__cursor {
-  // position:absolute;
-  // top: 0;
-  // bottom: 0;
-  // right: 8px;
-  // margin: auto;
-  // height: 50%;
-  // font-size: 13px;
-  // cursor: pointer;
-}
-
-.filters__wrapper__cursor_green {
-
-  // color: #0e4050;
-  // top: -9px;
-  // font-size: 23px;
 }
 
 .filters__wrapper__select {

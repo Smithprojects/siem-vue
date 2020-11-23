@@ -19,6 +19,7 @@
         <div class="filters__case">
           <Filters
           :filters="allFilters"
+          :placeholder="'Make choice'"
           
           @change="choceFilterName"
           />
@@ -42,7 +43,7 @@
         </div>
 
         <div class="filters__case">
-          <div v-for="filter of requestFilter"
+          <div v-for="filter of activeFilters"
             :key="filter.id"
             :class="filter.active ? 'active':''"
             :style="{'background-color':filter.color}"
@@ -93,15 +94,15 @@ export default {
         {id: 6, name: "Dest port", atr: 'list_dst_port', active: false, color: "#ccc"},
       ],
       filtersTwo : [
-        {id: 1, name: "Russia 1", active: false},
-        {id: 2, name: "Russia 2", active: false},
-        {id: 3, name: "Russia 3", active: false},
-        {id: 4, name: "Russia 4", active: false},
-        {id: 5, name: "Russia 5", active: false},
+        // {id: 1, name: "Russia 1", active: false},
+        // {id: 2, name: "Russia 2", active: false},
+        // {id: 3, name: "Russia 3", active: false},
+        // {id: 4, name: "Russia 4", active: false},
+        // {id: 5, name: "Russia 5", active: false},
 
       ],
       requestFilter : [],
-      // placeholder: ""
+      activeFilters: []
     }
   },
   methods: {
@@ -112,57 +113,39 @@ export default {
     },
     choceFilterName(value) {
 
-      const tryp = Object.values(this.allFilters)
-      this.filtersTwo = tryp.forEach(function(filter) {
-        if (filter.name==value) {
-            filter.active = true
-        }
-        console.log('tre',  this.filtersTwo)
-      })
+      const makeArrayFromAllFilters = Object.values(this.allFilters)
+        .filter( function (fil) {
+          if (fil.atr==value) {
+            // fil.active = true
+            return fil
+          }
+        })
+        .map(function(fil){
+          return {
+            atr:fil.atr,
+            filters: fil.filters
+          }
+        })
 
-      // const atrName = this.filters
-      //   .filter(filter => filter.name==value)[0].atr
-        
-      // this.filtersTwo = this.allFilters[atrName]
-        // .map(filter => {
-        //   return {
-        //     name: filter
-        //   }
-        // })
+      this.filtersTwo = makeArrayFromAllFilters[0].filters
+      this.requestFilter = makeArrayFromAllFilters
 
-      // const atrName2 = atrName.replace(/^list_\//, '');
-      // this.requestFilter.push({
-      //   name: value, 
-      //   atr: atrName.substr(5)
-      // })
-
-       
-      // this.requestFilter.name = atrName.substr(5)
-    
-      
-
-      console.log('test5', this.requestFilter)
     },
     choceFilterValue(value) {
-        // this.requestFilter.value = value
-        // this.requestFilter.active = false
-        // this.requestFilter = this.requestFilter
-        //   .map(filter => {
-        //     return {
-        //       value: value,
-        //       active: false
-        //     }
-        //   })
-
-        for (let filter of this.requestFilter) {
-          filter.value = value
-          
+      
+      this.requestFilter = this.requestFilter.map( function(fil) {
+        return {
+          atr: fil.atr,
+          value: value,
+          active: true
         }
-        console.log('test6', this.requestFilter)
+      })
+      console.log(this.requestFilter)
+      console.log('test6', this.requestFilter)
     },
     addFilter() {
       for (let filter of this.requestFilter) {
-        filter.active = true
+        this.activeFilters.push(filter)
       }
       console.log('test7', this.requestFilter)
       

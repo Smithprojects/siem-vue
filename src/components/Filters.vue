@@ -1,12 +1,12 @@
 <template>
   <div class="select-block ">
     <i class="form__fa-img fa fa-caret-down"></i>
-    <select v-if="fil && filters" class="select-block__select" @change="checkFilter(checkFilterName)" v-model="checkFilterName" name="" id="" >
-      <!-- <option value="" v-show="placeholder" selected hidden>{{placeholder}}</option> -->
+    <select v-if="fil && filters" class="select-block__select" data-atr="trtrt" @change="checkFilter(checkFilterName)" v-model="checkFilterName" name="" id="" >
+      <option value="" v-show="placeholder" selected hidden>{{placeholder}}</option>
       <option 
         v-for="(filter) in filters"
         :key="filter.name"
-        :value="filter.name"
+        :value="filter.atr"
         :data-id='filter.id'
         :data-atr='filter.atr'
         :style="filter.active ? {'background-color':filter.color} : ''"
@@ -16,15 +16,15 @@
       </option>
     </select>
     <select v-else-if="!fil && filters" class="select-block__select" @change="checkFilter(checkFilterName)" v-model="checkFilterName" name="" id="" >
-      <!-- <option value="" v-show="placeholder" selected hidden>{{placeholder}}</option> -->
+      <option value="" v-show="placeholder" selected hidden>{{placeholder}}</option>
       <option 
-        v-for="(filter, index) in activeFilter()"
+        v-for="(filter, index) in filters"
         :key="index"
         :value="filter"
         :style="filter.active ? {'background-color':filter.color} : ''"
         
       >
-        {{filter}} {{index}} {{checkFilterName}}
+        {{filter}}
       </option>
     </select>
     <select v-else class="select-block__select" @change="checkFilter(checkFilterName)" v-model="checkFilterName" name="" id="" >
@@ -46,7 +46,10 @@ export default {
       },
       filters: {
           type: [Object, Array],
-          required: false
+          required: false,
+          default:()=>{
+            return []
+          }
       },
       placeholder: {
         type: String,
@@ -61,7 +64,7 @@ export default {
   },
   methods: {
     activeFilter: function () {
-      return this.filters.filter(filter => filter.active) 
+      // return this.filters.filter(filter => filter.active) 
     },
     checkFilter(value) {
     
@@ -73,7 +76,9 @@ export default {
       //   }
       //   // console.log('tre', filter)
       // })
-      console.log(event.target)
+
+      // getAttribute('data-atr')
+      console.log(value)
 
       this.$emit("change", value)
       // console.log(this.filters)

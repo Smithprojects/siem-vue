@@ -12,7 +12,7 @@ export default {
   mutations: {
     updateData(state, data) {
       state.rows = data.content.data;
-      state.filters = data.content.filter;
+      state.filters = data.content.filters;
       state.meta = data.content.meta;
 
     },

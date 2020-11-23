@@ -1,121 +1,64 @@
 <template>
-
-    <div class="filtering">
-      <div class="filtering__search search">
-
-      
-          <form class="search__form form" action="" method="">
-            <div class="form__wrapper fa fa-search">
-              <input class="form__input" type="saerch" placeholder="search">
-              <i v-on:click="btn = !btn" class="search__wrapper__cursor form__fa-img form__fa-img_green fa fa-sliders"></i>
-            </div>
-          </form>
-      
-      </div>
-      <div v-if="btn" class="filtering__filters ">
-        <div class="filters__add filters">
-          <div class="filters__head">
-            <p class="filters__title">Add filter:</p>
-          </div>
-          <div class="filters__">
-            <Filters
-            :filters="filters"
-            
-            @change="choceFilterName"
-            />
-            <Filters
-            :filters="filtersTwo"
-            
-            @change="choceFilterValue"
-            />
-            <div class="filters__btn"
-              @click="addFilter"
-            >
-              <i class="fa fa-plus" aria-hidden="true"></i>
-            </div>
-          </div>
-        </div>
-      
-         
-        <div class="filters__show filters">
-          <!-- <div  class="show__filters filters__active" > -->
-            <div class="filters__head ">
-                <p class="filters__title">Filter:</p>
-            </div>
+  <div class="filtering">
     
-            <div v-for="filter of requestFilter"
-              :key="filter.id"
-              :class="filter.active ? 'active':''"
-              :style="{'background-color':filter.color}"
-              class="show__filters__wrapper show__filters__wrapper_green"
-            >
-              <i class="form__fa-img fa fa-close"></i>
-                Sorce country: {{filter.name}} {{filter.value}}
-            </div>
-            <div class="filters__btn">
-              <i class="fa fa-trash-o" aria-hidden="true"></i>
-            </div>
-          <!-- </div> -->
+    <div class="filtering__search search">
+      <form class="search__form form" action="" method="">
+        <div class="form__wrapper fa fa-search">
+          <input class="form__input" type="saerch" placeholder="search">
+          <i v-on:click="btn = !btn" class="search__wrapper__cursor form__fa-img form__fa-img_green fa fa-sliders"></i>
         </div>
-      
-      </div>
-    
+      </form>
     </div>
     
-    <!-- <div class="search" >
-        
-        <form class="search__form form" action="" method="">
-          <div class="form__wrapper fa fa-search">
-            <input class="form__input" type="saerch" placeholder="search">
-            <i v-on:click="btn = !btn" class="search__wrapper__cursor form__fa-img form__fa-img_green fa fa-sliders"></i>
-          </div>
-        </form>
-       
-     
-        <div v-if="btn" class="search__filters filters">
-          <div class="filters__head">
-            <p class="filters__title">Add filter:</p>
-          </div>
+    <div v-if="btn" class="filtering__filters ">
+      
+      <div class="filters__add filters">
+        <div class="filters__head">
+          <p class="filters__title">Add filter:</p>
+        </div>
+        <div class="filters__case">
           <Filters
-          :filters="filters"
+          :filters="allFilters"
           
           @change="choceFilterName"
           />
           <Filters
           :filters="filtersTwo"
-          
+          :fil="false"
           @change="choceFilterValue"
           />
-          <div class="filters__add-btn"
-            @click="addFilter"
+          
+        </div>
+        <div class="filters__btn"
+          @click="addFilter"
+        >
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </div>
+      </div>
+              
+      <div class="filters__show filters">
+        <div class="filters__head ">
+            <p class="filters__title">Filter:</p>
+        </div>
+
+        <div class="filters__case">
+          <div v-for="filter of requestFilter"
+            :key="filter.id"
+            :class="filter.active ? 'active':''"
+            :style="{'background-color':filter.color}"
+            class="show show_green"
           >
-            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="form__fa-img fa fa-close"></i>
+            {{filter.name}} {{filter.value}}
           </div>
         </div>
-     
-      
-          <div  v-if="btn" class="show__filters filters__active filters" >
-              <div class="show__filters__head filters__head ">
-                  <p class="filters__head_p">Filter:</p>
-              </div>
-      
-              <div v-for="filter of requestFilter"
-                :key="filter.id"
-                :class="filter.active ? 'active':''"
-                :style="{'background-color':filter.color}"
-                class="show__filters__wrapper show__filters__wrapper_green"
-                
-              >
-                <i class="form__fa-img fa fa-close"></i>
-                  Sorce country: {{filter.name}} {{filter.value}}
-              </div>
-              <div class="filters__delete-btn">
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
-              </div>
-          </div>
-      
-       
-    </div> -->
+        <div class="filters__btn">
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </div>
+      </div>
+    
+    </div>
+  </div>
 </template>
 
 <script>
@@ -169,21 +112,29 @@ export default {
     },
     choceFilterName(value) {
 
-      const atrName = this.filters
-        .filter(filter => filter.name==value)[0].atr
+      const tryp = Object.values(this.allFilters)
+      this.filtersTwo = tryp.forEach(function(filter) {
+        if (filter.name==value) {
+            filter.active = true
+        }
+        console.log('tre',  this.filtersTwo)
+      })
+
+      // const atrName = this.filters
+      //   .filter(filter => filter.name==value)[0].atr
         
-      this.filtersTwo = this.allFilters[atrName]
-        .map(filter => {
-          return {
-            name: filter
-          }
-        })
+      // this.filtersTwo = this.allFilters[atrName]
+        // .map(filter => {
+        //   return {
+        //     name: filter
+        //   }
+        // })
 
       // const atrName2 = atrName.replace(/^list_\//, '');
-      this.requestFilter.push({
-        name: value, 
-        atr: atrName.substr(5)
-      })
+      // this.requestFilter.push({
+      //   name: value, 
+      //   atr: atrName.substr(5)
+      // })
 
        
       // this.requestFilter.name = atrName.substr(5)
@@ -231,34 +182,65 @@ export default {
   padding: 10px;
   max-height: 165px;
 
-  &__search {
+  .search {
 
-  }
+    .form {
+      display: flex;
+      justify-content: flex-end;
 
-  
-}
+      &__wrapper {
+        position: relative;
 
-.form__fa-img {
-      position:absolute;
-      top: 0;
-      bottom: 0;
-      right: 8px;
-      margin: auto;
-      height: 50%;
-      font-size: 13px;
-      cursor: pointer;
+        &::before {
+          content: '\f002';
+          right: 55px;
+          position: absolute;
+          line-height: 37px;
+          color: #1a87a8;
 
-      &_green {
-        color: #0e4050;
-        top: -9px;
-        font-size: 23px;
+        }
+      }
+
+      &__input {
+        border: 1px solid #0e4050;
+        background-color: #0e4050;
+        color: #1a87a8;
+        border-radius: 5px;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        margin-right: 40px;
+        
+        &:hover {
+          border: 1px solid #1a87a8;
+          transition: all 0.5s ease;
+          color: #1a87a8;
+        }
+      }
+
+      &__fa-img {
+        position:absolute;
+        top: 0;
+        bottom: 0;
+        right: 8px;
+        margin: auto;
+        height: 50%;
+        font-size: 13px;
+        cursor: pointer;
+
+        &_green {
+          color: #0e4050;
+          top: -9px;
+          font-size: 23px;
+        }
       }
     }
+  }
+}
 
 .filters {
   display: flex;
   padding-top: 10px;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   /* animation: filterOpacityOff 2s linear; */
   /* opacity: 0; */
   /* transition: all 1s ease; */
@@ -279,8 +261,9 @@ export default {
     padding: 5px 0;
   }
 
-  &__add {
-    // display: flex;
+  &__case {
+    display: flex;
+    flex-wrap: wrap;
   
   }
 
@@ -290,102 +273,49 @@ export default {
     align-items: center;
     margin-left: 10px;
   }
-
-  &__wrapper {
-    margin-right: 5px;
-    position: relative;
-    border-radius: 5px;
-    min-width: 124px;
-
-    &:hover {
-      border: 1px solid white;
-      transition: all 1s ease;
-      border-radius: 5px;
-    }
-  } 
 }
 
-.search {
-  // background:#0000005d;
-  // border-radius: 15px;
-  // text-align: center;
-  // padding: 10px;
-  // max-height: 165px;
+.show {
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #06303d;
+  padding: 2px 35px 2px 10px;
+  margin: 5px 5px 5px 0;
+  font-size: 14px;
+  position: relative;
+  display: none;
+  border: 1px solid #06303d;
 
-  &__form {
-   
+  &_green:hover {
+    /* box-shadow: 0 10px 30px rgba(233,48,161,0.3); */
+    transition:  all 0.5s ease;
+    background: transparent;
+    border: 2px solid #077233;
   }
 
-  .form {
-    display: flex;
-    justify-content: flex-end;
-
-    &__wrapper {
-      position: relative;
-
-      &::before {
-        content: '\f002';
-        right: 55px;
-        position: absolute;
-        line-height: 37px;
-        color: #1a87a8;
-
-      }
-    }
-
-    &__input {
-      border: 1px solid #0e4050;
-      background-color: #0e4050;
-      color: #1a87a8;
-      border-radius: 5px;
-      padding: 10px 20px;
-      box-sizing: border-box;
-      margin-right: 40px;
-      
-      &:hover {
-        border: 1px solid #1a87a8;
-        transition: all 0.5s ease;
-        color: #1a87a8;
-      }
-    }
-
-    &__fa-img {
-      position:absolute;
-      top: 0;
-      bottom: 0;
-      right: 8px;
-      margin: auto;
-      height: 50%;
-      font-size: 13px;
-      cursor: pointer;
-
-      &_green {
-        color: #0e4050;
-        top: -9px;
-        font-size: 23px;
-      }
-    }
-  }
-
-  &__filters {
-
-  }
-
-  
-  
-
-  &__show {
-
+  &_purple:hover {
+    /* box-shadow: 0 10px 30px rgba(233,48,161,0.3); */
+    transition:  all 0.5s ease;
+    background: transparent;
+    border: 2px solid #6957b8;
   }
 }
 
+.form__fa-img {
+  position:absolute;
+  top: 0;
+  bottom: 0;
+  right: 8px;
+  margin: auto;
+  height: 50%;
+  font-size: 13px;
+  cursor: pointer;
 
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-  opacity: 0;
+  &_green {
+    color: #0e4050;
+    top: -9px;
+    font-size: 23px;
+  }
 }
 
 .active {
@@ -395,64 +325,9 @@ export default {
     /* visibility: collapse; */
     /* transition: all 3s ease; */
     /* display: none !important;  */
-    display: flex !important;
+    display: flex ;
 
 }
-
-.search__wrapper__cursor:hover {
-  color: #1a87a8;
-}
-
-.filters__wrapper__select {
-  border: 1px solid #06303d;
-  cursor: pointer;
-  border-radius: 5px;
-  background-color: #06303d;
-  color: rgba(255, 255, 255, 0.863);
-  padding: 2px 35px 2px 10px;
-  height: 100%;
-  width: 100%;
-
-}
-
-.show__filters {
-  padding-top: 10px;
-}
-
-.show__filters__wrapper {
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #06303d;
-  color: white;
-  padding: 2px 35px 2px 10px;
-  margin: 5px 5px 5px 0;
-  font-size: 14px;
-  position: relative;
-  display: none;
-}
-
-.show__filters__wrapper_green:hover {
-  /* box-shadow: 0 10px 30px rgba(233,48,161,0.3); */
-  transition:  all 0.5s ease;
-  background: transparent;
-  border: 2px solid #077233;
-}
-
-.show__filters__wrapper_purple:hover {
-  /* box-shadow: 0 10px 30px rgba(233,48,161,0.3); */
-  transition:  all 0.5s ease;
-  background: transparent;
-  border: 2px solid #6957b8;
-}
-
-/* .show__filters__wrapper_purple {
-   background-color: #6957b8;
-}
-
-.show__filters__wrapper_green {
-   background-color: #077233;
-} */
 
 @keyframes filterOpacityOn {
      /* 0%{

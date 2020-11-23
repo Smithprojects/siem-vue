@@ -31,11 +31,11 @@
     </div>
     <div class="table__pagination pagination">
       <div class="pagination__arrow">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
       </div>
       <div class="pagination__number">{{meta.page}}</div>
       <div class="pagination__arrow">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
       </div>
     </div>
   </div>

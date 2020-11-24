@@ -49,8 +49,10 @@
             :style="{'background-color':filter.color}"
             class="show show_green"
           >
-            <i class="form__fa-img fa fa-close"></i>
-            {{filter.name}} {{filter.value}}
+            <i class="form__fa-img fa fa-close"
+             @click="deleteFilter(filter.atr)"
+            ></i>
+            {{filter.atr}} {{filter.value}}
           </div>
         </div>
         <div class="filters__btn">
@@ -148,8 +150,15 @@ export default {
         this.activeFilters.push(filter)
       }
       console.log('test7', this.requestFilter)
-      
-      
+    },
+    deleteFilter(atr) {
+      for (let filter of this.requestFilter) {
+        if (filter.atr==atr) {
+          filter.active = !filter.active
+        }
+        // this.activeFilters.push(filter)
+      }
+      console.log(atr, this.requestFilter)
     }
   }
 }

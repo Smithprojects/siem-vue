@@ -95,14 +95,7 @@ export default {
         {id: 5, name: "Dest IP", atr: 'list_dst_ips', active: false, color: "#ccc"},
         {id: 6, name: "Dest port", atr: 'list_dst_port', active: false, color: "#ccc"},
       ],
-      filtersTwo : [
-        // {id: 1, name: "Russia 1", active: false},
-        // {id: 2, name: "Russia 2", active: false},
-        // {id: 3, name: "Russia 3", active: false},
-        // {id: 4, name: "Russia 4", active: false},
-        // {id: 5, name: "Russia 5", active: false},
-
-      ],
+      filtersTwo : [],
       requestFilter : [],
       activeFilters: []
     }
@@ -146,19 +139,41 @@ export default {
       console.log('test6', this.requestFilter)
     },
     addFilter() {
-      for (let filter of this.requestFilter) {
-        this.activeFilters.push(filter)
-      }
+      // for (let filter of this.requestFilter) {
+    
+        if (this.activeFilters.length==0) {
+          this.activeFilters.push(this.requestFilter[0])
+          console.log('come')
+          
+        }  
+        
+        else if (this.activeFilters) {
+          console.log('else if', this.activeFilters.filter(item => item.atr == this.requestFilter[0].atr))
+          
+          if (this.activeFilters.filter(item => item.atr == this.requestFilter[0].atr) == false) {
+              this.activeFilters.push(this.requestFilter[0])
+          } else {
+            return this.activeFilters
+          }
+
+        }
+
       console.log('test7', this.requestFilter)
     },
     deleteFilter(atr) {
-      for (let filter of this.requestFilter) {
+      for (let filter of this.activeFilters) {
         if (filter.atr==atr) {
-          filter.active = !filter.active
+          // filter.active = false
+          console.log('splice', this.activeFilters.findIndex(item => item.atr === filter.atr))
+          this.activeFilters.splice(this.activeFilters.findIndex(item => item.atr === filter.atr), 1)
+          
         }
-        // this.activeFilters.push(filter)
+       
       }
       console.log(atr, this.requestFilter)
+    },
+    getRandomInRange(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
   }
 }

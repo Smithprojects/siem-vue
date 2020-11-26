@@ -127,12 +127,15 @@ export default {
 
     },
     choceFilterValue(value) {
+
+      const color = this.getRandomInRange(200,300)
       
       this.requestFilter = this.requestFilter.map( function(fil) {
         return {
           atr: fil.atr,
           value: value,
-          active: true
+          active: true,
+          color:'#077'+ color
         }
       })
       console.log(this.requestFilter)
@@ -279,6 +282,10 @@ export default {
     display: flex;
     align-items: center;
     margin-left: 10px;
+
+    &:active {
+      color: #06303d;
+    }
   }
 }
 

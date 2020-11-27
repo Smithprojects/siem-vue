@@ -24,7 +24,7 @@
           @change="choceFilterName"
           />
           <Filters
-          :filters="filtersTwo"
+          :filters="filtersValues"
           :fil="false"
           @change="choceFilterValue"
           />
@@ -37,7 +37,9 @@
         </div>
       </div>
               
-      <div class="filters__show filters">
+      <div class="filters__show filters"
+        v-show="showActiveFilters"
+      >
         <div class="filters__head ">
             <p class="filters__title">Filter:</p>
         </div>
@@ -55,7 +57,9 @@
             {{filter.atr}} {{filter.value}}
           </div>
         </div>
-        <div class="filters__btn">
+        <div class="filters__btn"
+          @click="deleteAllFilters"
+        >
           <i class="fa fa-trash-o" aria-hidden="true"></i>
         </div>
       </div>
@@ -86,18 +90,11 @@ export default {
     return{
       btn : false,
       filterModel : [],
-      filters : [
-        {id: 1, name: "Host", atr: 'list_hosts', active: false, color: "#6957b8"},
-        {id: 2, name: "Host name", atr: 'list_host_names', active: false, color: "#077233"},
-        {id: 3, name: "User name", atr: 'list_user_name', active: false, color: "#6957b8"},
-        {id: 3, name: "Program", atr: 'list_programs', active: false, color: "#6957b8"},
-        {id: 4, name: "Source IP", atr: 'list_src_ips', active: false, color: "#077233"},
-        {id: 5, name: "Dest IP", atr: 'list_dst_ips', active: false, color: "#ccc"},
-        {id: 6, name: "Dest port", atr: 'list_dst_port', active: false, color: "#ccc"},
-      ],
-      filtersTwo : [],
+      filters : [],
+      filtersValues : [],
       requestFilter : [],
-      activeFilters: []
+      activeFilters: [],
+      showActiveFilters: false
     }
   },
   methods: {
@@ -122,7 +119,7 @@ export default {
           }
         })
 
-      this.filtersTwo = makeArrayFromAllFilters[0].filters
+      this.filtersValues = makeArrayFromAllFilters[0].filters
       this.requestFilter = makeArrayFromAllFilters
 
     },
@@ -138,19 +135,22 @@ export default {
           color:'#077'+ color
         }
       })
+
+      // this.$emit('filterValue', this.requestFilter)
       console.log(this.requestFilter)
       console.log('test6', this.requestFilter)
     },
     addFilter() {
       // for (let filter of this.requestFilter) {
-    
-        if (this.activeFilters.length==0) {
-          this.activeFilters.push(this.requestFilter[0])
-          console.log('come')
+        console.log('test6', typeof this.requestFilter)
+        if (!this.activeFilters.length && this.requestFilter) {
           
-        }  
-        
-        else if (this.activeFilters) {
+          this.activeFilters.push(this.requestFilter[0])
+          this.showActiveFilters=true
+          console.log('come')
+                
+        }  else if (this.activeFilters) {
+          
           console.log('else if', this.activeFilters.filter(item => item.atr == this.requestFilter[0].atr))
           
           if (this.activeFilters.filter(item => item.atr == this.requestFilter[0].atr) == false) {
@@ -160,20 +160,27 @@ export default {
           }
 
         }
-
+      this.$emit('filterValue', this.requestFilter)
       console.log('test7', this.requestFilter)
     },
     deleteFilter(atr) {
+      
       for (let filter of this.activeFilters) {
         if (filter.atr==atr) {
           // filter.active = false
-          console.log('splice', this.activeFilters.findIndex(item => item.atr === filter.atr))
           this.activeFilters.splice(this.activeFilters.findIndex(item => item.atr === filter.atr), 1)
           
+          if (!this.activeFilters.length) {
+            this.showActiveFilters=false
+          }
         }
-       
       }
+      
       console.log(atr, this.requestFilter)
+    },
+    deleteAllFilters() {
+      this.activeFilters = []
+      this.showActiveFilters=false
     },
     getRandomInRange(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;

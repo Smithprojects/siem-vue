@@ -90,7 +90,7 @@ export default {
     width: 100%;
     margin-top: 10px;
     border-radius: 20px;
-    background: #0000005d;
+    // background: #0000005d;
     text-align: center;
     overflow: hidden;
 
@@ -152,7 +152,7 @@ export default {
 
       ul:hover {
         background: rgba(9, 1, 12, 0.589);
-        border-bottom: 2px solid rgb(243, 17, 205);
+        // border-bottom: 2px solid rgb(19, 18, 19);
       }
     }
 
@@ -167,7 +167,7 @@ export default {
         cursor: pointer;
 
         &:hover {
-          color: rgb(243, 17, 205);
+          color: #06303d;
         }
         
       }
@@ -180,7 +180,7 @@ export default {
 
         &:hover {
           background: rgba(9, 1, 12, 0.589);
-          border: 2px solid rgb(243, 17, 205);
+          color: #06303d;
         }
       }
     }

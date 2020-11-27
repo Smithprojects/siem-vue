@@ -6,6 +6,7 @@
     <div class="events__filter">
       <EventFilters 
         :allFilters="allFilters"
+        @filterValue="filterValue"
       />
     </div>
     
@@ -44,13 +45,7 @@ export default {
         {name: 'dest_port', label: 'Dest port'},
         {name: 'program', label: 'Program'},
       ],
-      rows: [
-        { id:1, time_stamp:"test", event:"test1", host:"John", src_ip: 20, user_name:"test", dest_ip: 3123, dest_port: 80, program: 0.03343 },
-        { id:2, time_stamp:"test", event:"test2", host:"Jane", src_ip: 20, user_name:"test", dest_ip: 3123, dest_port: 80, program: 0.03343 },
-        { id:3, time_stamp:"test", event:"test1", host:"Susan", src_ip: 20, user_name:"test", dest_ip: 3123, dest_port: 80, program: 0.03343 },
-        { id:4, time_stamp:"test", event:"test2", host:"Chris", src_ip: 20, user_name:"test", dest_ip: 3123, dest_port: 80, program: 0.03343 },
-        { id:5, time_stamp:"test", event:"test3", host:"Dan", src_ip: 20, user_name:"test", dest_ip: 3123, dest_port: 80, program: 0.03343 },
-      ]
+      rows: []
     };
   },
   computed: mapGetters(["allRows", "allFilters", "allMeta"]),
@@ -59,7 +54,13 @@ export default {
   //     return this.$store.getters.allRows
   //   }
   // },
-  methods: mapActions(["fetchData"]),
+  methods: {
+    ...mapActions(["fetchData"]),
+    filterValue(val) {
+      console.log('Events', val)
+    },
+    
+  },
   async mounted() {
     this.fetchData();
   }
@@ -92,7 +93,8 @@ select {
   }
 
   &__filter {
-
+    box-shadow: 0 5px 10px rgba(0,0,0,0.25), 0 10px 24px rgba(0,0,0,0.22);
+    border-radius: 15px;
   }
 }
 </style>

@@ -1,8 +1,19 @@
+import { stringify } from 'query-string';
+
 export default {
   actions: {
-    async fetchData(ctx) {
+    /* eslint-disable no-unused-vars */
+    async fetchData(ctx, params ) {
       const res = await fetch(
-          'http://127.0.0.1:8000/api/events/list/'
+          `http://127.0.0.1:8000/api/events/list/?${stringify(params)}`
+          // `host=${host}` +
+          // `&host_name=${host_name}` +
+          // `&user_name=${user_name}` +
+          // `&program=${program}` +
+          // `&src_ip=${src_ip}` +
+          // `&dst_ip=${dst_ip}` +
+          // `&dst_port=${dst_port}` +
+          // `&event_discription=${event_discription}` 
       );
       const data = await res.json();
       

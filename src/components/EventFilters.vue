@@ -31,6 +31,7 @@
           
         </div>
         <div class="filters__btn"
+          :class="{filters__btn_disabled: !activeAddBtn}"
           @click="addFilter"
         >
           <i class="fa fa-plus" aria-hidden="true"></i>
@@ -52,7 +53,7 @@
             class="show show_green"
           >
             <i class="form__fa-img fa fa-close"
-             @click="deleteFilter(filter.atr)"
+              @click="deleteFilter(filter.atr)"
             ></i>
             {{filter.atr}} {{filter.value}}
           </div>
@@ -89,12 +90,14 @@ export default {
   data(){
     return{
       btn : false,
+      showActiveFilters: false,
+      activeAddBtn: false,
       filterModel : [],
       filters : [],
       filtersValues : [],
       requestFilter : [],
       activeFilters: [],
-      showActiveFilters: false
+      colorsForFilters:['#5F9EA0', '#4682B4', '#B0C4DE', '#B0E0E6', '#87CEEB', '#87CEFA', '#6495ED', '#8FBC8F', '#20B2AA', '#A9A9A9', '#778899', '#808080']
     }
   },
   methods: {
@@ -121,22 +124,25 @@ export default {
 
       this.filtersValues = makeArrayFromAllFilters[0].filters
       this.requestFilter = makeArrayFromAllFilters
+      console.log('name', this.requestFilter, event.target.value)
 
     },
     choceFilterValue(value) {
 
-      const color = this.getRandomInRange(200,300)
+      const colorId = this.getRandomInRange(0,11)
+      const color = this.colorsForFilters[colorId]
       
       this.requestFilter = this.requestFilter.map( function(fil) {
         return {
           atr: fil.atr,
           value: value,
           active: true,
-          color:'#077'+ color
+          color: color
         }
       })
 
-      // this.$emit('filterValue', this.requestFilter)
+      this.activeAddBtn=true
+      
       console.log(this.requestFilter)
       console.log('test6', this.requestFilter)
     },
@@ -160,7 +166,8 @@ export default {
           }
 
         }
-      this.$emit('filterValue', this.requestFilter)
+      
+      this.$emit('filterValue', this.activeFilters)
       console.log('test7', this.requestFilter)
     },
     deleteFilter(atr) {
@@ -175,12 +182,13 @@ export default {
           }
         }
       }
+      this.$emit('filterValue', this.activeFilters)
       
-      console.log(atr, this.requestFilter)
     },
     deleteAllFilters() {
       this.activeFilters = []
       this.showActiveFilters=false
+      this.$emit('filterValue', this.activeFilters)
     },
     getRandomInRange(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -257,6 +265,7 @@ export default {
 .filters {
   display: flex;
   padding-top: 10px;
+  transition:  all 0.5s ease;
   // flex-wrap: wrap;
   /* animation: filterOpacityOff 2s linear; */
   /* opacity: 0; */
@@ -292,6 +301,12 @@ export default {
 
     &:active {
       color: #06303d;
+    }
+
+    &_disabled {
+      color:#0e4050;
+      pointer-events: none;
+      
     }
   }
 }

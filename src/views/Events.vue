@@ -45,7 +45,8 @@ export default {
         {name: 'dest_port', label: 'Dest port'},
         {name: 'program', label: 'Program'},
       ],
-      rows: []
+      rows: [],
+      req:{}
     };
   },
   computed: mapGetters(["allRows", "allFilters", "allMeta"]),
@@ -56,8 +57,15 @@ export default {
   // },
   methods: {
     ...mapActions(["fetchData"]),
-    filterValue(val) {
-      console.log('Events', val)
+    async filterValue(activeFilters) {
+      console.log('Events', activeFilters)
+      this.req = {}
+      activeFilters.forEach(element => {
+        this.req[element.atr] = element.value
+      });
+      this.fetchData(this.req);
+      console.log('req', this.req)
+      
     },
     
   },

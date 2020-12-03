@@ -1,0 +1,147 @@
+<template>
+  <div class="select-block" >
+    
+    <div 
+      class="select-block__select"
+      v-if="fil && filters"  
+      data-atr="trtrt"
+      @click="hideOptions = !hideOptions" 
+      
+    >
+      <span class="select-block__text" >{{selected}}</span>
+      <i class="select-block__icon fa fa-caret-down"></i>
+    </div>  
+    <div class="select-block__options"
+      v-if="hideOptions"
+    >
+      <div class="select-block__option"
+        v-for="(filter) in filters"
+        :key="filter.name"
+        :value="filter.atr"
+        :data-id='filter.id'
+        :data-atr='filter.atr'
+        :style="filter.active ? {'background-color':filter.color} : ''"
+        @click="clickOptions(filter)"
+      >
+      {{filter.name}} 
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data: () => ({
+    // select: this.select,
+    checkSelectName: "",
+    hideOptions: false,
+    
+  }),
+  props: {
+      fil: {
+        type: Boolean,
+        required: false,
+        default: true
+      },
+      filters: {
+          type: [Object, Array],
+          required: false,
+          default:()=>{
+            return []
+          }
+      },
+      placeholder: {
+        type: String,
+        required: false,
+        default: 'Not to filters'
+      },
+      selected: {
+        type: String,
+        required: false,
+        default: ''
+      },
+  },
+  computed: {
+    usernameInput: {
+      get: function(){
+          return this.select;
+      },
+      // set: function(newValue){
+      //     // this.$emit('update:select', newValue)
+      // }   
+    },
+  },
+  methods: {
+     checkFilter(value) {
+      console.log(value)
+      this.$emit("change", value)
+    },
+    clickOptions(filter) {
+        // this.usernameInput = filter.name
+        this.$emit("clickOptions", filter.name)
+        this.hideOptions = false
+        console.log(filter)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+
+.select-block {
+  margin-right: 5px;
+  position: relative;
+  border-radius: 5px;
+  min-width: 124px;
+  font-size: 14px;
+
+  &:hover {
+    // border: 1px solid white;
+    transition: all 1s ease;
+    // border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 24px rgba(0, 0, 0, 0.22);
+  }
+
+  &__select {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid #06303d;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #06303d;
+    // color: rgba(255, 255, 255, 0.863);
+    // padding: 2px 35px 2px 10px;
+    height: 100%;
+    width: 100%;
+  }
+
+  &__text {
+
+  }
+
+  &__icon {
+
+  }
+
+  &__options {
+    position: absolute;
+    background-color: #06303d;
+    right: 0;
+    top: 30px;
+    width: 100%;
+  }
+
+  &__option {
+    padding: 2px 0px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgb(32, 178, 170);
+      // border-radius: 5px;
+    }
+    
+  }
+}
+
+</style>

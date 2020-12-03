@@ -18,15 +18,23 @@
         </div>
         <div class="filters__case">
           <Filters
-          :filters="allFilters"
-          :placeholder="'Make choice'"
-          
-          @change="choceFilterName"
+            :filters="allFilters"
+            :placeholder="'Make choice'"
+            
+            @change="choceFilterName"
           />
           <Filters
-          :filters="filtersValues"
-          :fil="false"
-          @change="choceFilterValue"
+            :filters="filtersValues"
+            :fil="false"
+            @change="choceFilterValue"
+          />
+          <select-filters
+            :filters="allFilters"
+            :placeholder="'Make choice'"
+            :selected="selected"
+            @clickOptions="clickOptions"
+            @click="choceFilterName"
+          
           />
           
         </div>
@@ -71,12 +79,14 @@
 
 <script>
 import Filters from './Filters';
+import SelectFilters from './SelectFilters';
 // import FilterOptions from  './FilterOptions';
 export default {
   name : 'search',
   components : {
       // FilterOptions,
-      Filters
+    Filters,
+    SelectFilters
   },
   props: {
     allFilters: {
@@ -89,6 +99,7 @@ export default {
   },
   data(){
     return{
+      selected: 'Select',
       btn : false,
       showActiveFilters: false,
       activeAddBtn: false,
@@ -101,6 +112,10 @@ export default {
     }
   },
   methods: {
+    clickOptions(option) {
+      this.selected = option
+      console.log('opt', option)
+    },
     onSubmit() {
       // v-on:click="filter.active = !filter.active"
       console.log("filtre:")

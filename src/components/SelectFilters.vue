@@ -3,16 +3,16 @@
     
     <div 
       class="select-block__select"
-      v-if="fil && filters"  
+      v-if="filters"  
       data-atr="trtrt"
-      @click="hideOptions = !hideOptions" 
+      @click="openOptions = !openOptions" 
       
     >
-      <span class="select-block__text" >{{selected}}</span>
+      <span class="select-block__text" >{{getCurrentChoice}}</span>
       <i class="select-block__icon fa fa-caret-down"></i>
     </div>  
-    <div class="select-block__options"
-      v-if="hideOptions"
+    <div class="select-block__options" :data-name='selected'
+      v-if="openOptions"
     >
       <div class="select-block__option"
         v-for="(filter) in filters"
@@ -34,14 +34,18 @@ export default {
   data: () => ({
     // select: this.select,
     checkSelectName: "",
-    hideOptions: false,
+    openOptions: false,
     
   }),
   props: {
+      value: {
+        type: [Object, String, Array],
+        default: null,
+      },
       fil: {
         type: Boolean,
         required: false,
-        default: true
+        default: false
       },
       filters: {
           type: [Object, Array],
@@ -62,13 +66,11 @@ export default {
       },
   },
   computed: {
-    usernameInput: {
-      get: function(){
-          return this.select;
-      },
-      // set: function(newValue){
-      //     // this.$emit('update:select', newValue)
-      // }   
+     getCurrentChoice: function () {
+      if (!this.value) {
+        return this.placeholder
+      }
+      return this.value.name ? this.value.name : this.value.text
     },
   },
   methods: {
@@ -76,11 +78,11 @@ export default {
       console.log(value)
       this.$emit("change", value)
     },
-    clickOptions(filter) {
+    clickOptions(options) {
         // this.usernameInput = filter.name
-        this.$emit("clickOptions", filter.name)
-        this.hideOptions = false
-        console.log(filter)
+        this.$emit("input", options)
+        this.openOptions = false
+        console.log('filterrr', options)
     }
   }
 }
@@ -105,7 +107,7 @@ export default {
   &__select {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
     border: 1px solid #06303d;
     cursor: pointer;
     border-radius: 5px;
@@ -121,7 +123,14 @@ export default {
   }
 
   &__icon {
-
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    right: 8px;
+    margin: auto;
+    height: 50%;
+    font-size: 13px;
+    cursor: pointer;
   }
 
   &__options {

@@ -30,10 +30,14 @@
           />
           <select-filters
             :filters="allFilters"
-            :placeholder="'Make choice'"
-            :selected="selected"
-            @clickOptions="clickOptions"
-            @click="choceFilterName"
+            @input="clickOptions"
+            v-model="selectedFilter"
+          
+          />
+          <select-filters
+            :filters="filtersValues"
+            @input="choceFilterValue"
+            v-model="selectedFilterOption"
           
           />
           
@@ -99,7 +103,8 @@ export default {
   },
   data(){
     return{
-      selected: 'Select',
+      selectedFilter: null,
+      selectedFilterOption: null,
       btn : false,
       showActiveFilters: false,
       activeAddBtn: false,
@@ -112,9 +117,22 @@ export default {
     }
   },
   methods: {
-    clickOptions(option) {
-      this.selected = option
-      console.log('opt', option)
+    clickOptions(options) {
+      
+        
+        this.filtersValues = options.filters.map(function(val){
+          return {
+            atr: options.atr,
+            name: val
+          }
+        })
+        this.selectedFilterOption = this.filtersValues[0]
+        this.requestFilter = this.filtersValues
+      
+      // this.selectedFilterOption = options.name
+      
+      
+      console.log('opt',this.filtersValues)
     },
     onSubmit() {
       // v-on:click="filter.active = !filter.active"
@@ -139,7 +157,7 @@ export default {
 
       this.filtersValues = makeArrayFromAllFilters[0].filters
       this.requestFilter = makeArrayFromAllFilters
-      console.log('name', this.requestFilter, event.target.value)
+      console.log('name-2', this.requestFilter)
 
     },
     choceFilterValue(value) {
@@ -150,7 +168,7 @@ export default {
       this.requestFilter = this.requestFilter.map( function(fil) {
         return {
           atr: fil.atr,
-          value: value,
+          value: value.name,
           active: true,
           color: color
         }
@@ -158,7 +176,7 @@ export default {
 
       this.activeAddBtn=true
       
-      console.log(this.requestFilter)
+      // console.log(this.requestFilter)
       console.log('test6', this.requestFilter)
     },
     addFilter() {
@@ -313,6 +331,10 @@ export default {
     display: flex;
     align-items: center;
     margin-left: 10px;
+
+    &:hover {
+      color: #1a87a8;
+    }
 
     &:active {
       color: #06303d;

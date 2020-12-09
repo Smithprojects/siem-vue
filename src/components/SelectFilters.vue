@@ -4,22 +4,18 @@
     <div 
       class="select-block__select"
       v-if="filters"  
-      data-atr="trtrt"
       @click="openOptions = !openOptions" 
       
     >
       <span class="select-block__text" >{{getCurrentChoice}}</span>
       <i class="select-block__icon fa fa-caret-down"></i>
     </div>  
-    <div class="select-block__options" :data-name='selected'
+    <div class="select-block__options" 
       v-if="openOptions"
     >
       <div class="select-block__option"
         v-for="(filter) in filters"
         :key="filter.name"
-        :value="filter.atr"
-        :data-id='filter.id'
-        :data-atr='filter.atr'
         :style="filter.active ? {'background-color':filter.color} : ''"
         @click="clickOptions(filter)"
       >
@@ -32,57 +28,46 @@
 <script>
 export default {
   data: () => ({
-    // select: this.select,
-    checkSelectName: "",
+    checkSelectName: '',
     openOptions: false,
-    
   }),
   props: {
-      value: {
-        type: [Object, String, Array],
-        default: null,
-      },
-      fil: {
-        type: Boolean,
-        required: false,
-        default: false
-      },
-      filters: {
-          type: [Object, Array],
-          required: false,
-          default:()=>{
-            return []
-          }
-      },
-      placeholder: {
-        type: String,
-        required: false,
-        default: 'Not to filters'
-      },
-      selected: {
+    value: {
+      type: [Object, String, Array],
+      default: null,
+    },
+    filters: {
+      type: [Object, Array],
+      required: false,
+      default:()=>{
+        return []
+      }
+    },
+    placeholder: {
+      type: String,
+      required: false,
+      default: 'Not to filters'
+    },
+    selected: {
         type: String,
         required: false,
         default: ''
       },
-  },
+   },
   computed: {
-     getCurrentChoice: function () {
+    getCurrentChoice: function () {
       if (!this.value) {
         return this.placeholder
       }
-      return this.value.name ? this.value.name : this.value.text
+      return this.value.name 
     },
   },
   methods: {
-     checkFilter(value) {
-      console.log(value)
-      this.$emit("change", value)
-    },
     clickOptions(options) {
-        // this.usernameInput = filter.name
-        this.$emit("input", options)
-        this.openOptions = false
-        console.log('filterrr', options)
+      // this.usernameInput = filter.name
+      this.$emit("input", options)
+      this.openOptions = false
+      console.log('filterrr', options)
     }
   }
 }

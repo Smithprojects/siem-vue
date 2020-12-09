@@ -17,7 +17,7 @@
           <p class="filters__title">Add filter:</p>
         </div>
         <div class="filters__case">
-          <Filters
+          <!-- <Filters
             :filters="allFilters"
             :placeholder="'Make choice'"
             
@@ -27,7 +27,7 @@
             :filters="filtersValues"
             :fil="false"
             @change="choceFilterValue"
-          />
+          /> -->
           <select-filters
             :filters="allFilters"
             @input="clickOptions"
@@ -82,14 +82,14 @@
 </template>
 
 <script>
-import Filters from './Filters';
+// import Filters from './Filters';
 import SelectFilters from './SelectFilters';
 // import FilterOptions from  './FilterOptions';
 export default {
   name : 'search',
   components : {
       // FilterOptions,
-    Filters,
+    // Filters,
     SelectFilters
   },
   props: {
@@ -119,7 +119,7 @@ export default {
   methods: {
     clickOptions(options) {
       
-        
+        console.log('clickOptions', options)
         this.filtersValues = options.filters.map(function(val){
           return {
             atr: options.atr,
@@ -128,40 +128,42 @@ export default {
         })
         this.selectedFilterOption = this.filtersValues[0]
         this.requestFilter = this.filtersValues
-      
+        this.activeAddBtn=true
       // this.selectedFilterOption = options.name
+      console.log('clickOptions1', this.selectedFilterOption)
       
       
-      console.log('opt',this.filtersValues)
+      
     },
     onSubmit() {
       // v-on:click="filter.active = !filter.active"
       console.log("filtre:")
 
     },
-    choceFilterName(value) {
+    // choceFilterName(value) {
 
-      const makeArrayFromAllFilters = Object.values(this.allFilters)
-        .filter( function (fil) {
-          if (fil.atr==value) {
-            // fil.active = true
-            return fil
-          }
-        })
-        .map(function(fil){
-          return {
-            atr:fil.atr,
-            filters: fil.filters
-          }
-        })
+    //   const makeArrayFromAllFilters = Object.values(this.allFilters)
+    //     .filter( function (fil) {
+    //       if (fil.atr==value) {
+    //         // fil.active = true
+    //         return fil
+    //       }
+    //     })
+    //     .map(function(fil){
+    //       return {
+    //         atr:fil.atr,
+    //         filters: fil.filters
+    //       }
+    //     })
 
-      this.filtersValues = makeArrayFromAllFilters[0].filters
-      this.requestFilter = makeArrayFromAllFilters
-      console.log('name-2', this.requestFilter)
+    //   this.filtersValues = makeArrayFromAllFilters[0].filters
+    //   this.requestFilter = makeArrayFromAllFilters
+      
 
-    },
+    // },
     choceFilterValue(value) {
-
+      console.log('choceFilterValue', value)
+      console.log('choceFilterValue2', this.requestFilter)
       const colorId = this.getRandomInRange(0,11)
       const color = this.colorsForFilters[colorId]
       
@@ -173,11 +175,9 @@ export default {
           color: color
         }
       })
-
-      this.activeAddBtn=true
+      console.log('choceFilterValue3', this.requestFilter)
+      // this.activeAddBtn=true
       
-      // console.log(this.requestFilter)
-      console.log('test6', this.requestFilter)
     },
     addFilter() {
       // for (let filter of this.requestFilter) {
@@ -201,7 +201,7 @@ export default {
         }
       
       this.$emit('filterValue', this.activeFilters)
-      console.log('test7', this.requestFilter)
+      console.log('test7', this.activeFilters)
     },
     deleteFilter(atr) {
       

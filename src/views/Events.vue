@@ -61,7 +61,7 @@ export default {
       console.log('Events', activeFilters)
       this.req = {}
       activeFilters.forEach(element => {
-        this.req[element.atr] = element.value
+        this.req[element.atr] = element.name
       });
       this.fetchData(this.req);
       console.log('req', this.req)

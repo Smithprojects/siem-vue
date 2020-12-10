@@ -38,7 +38,7 @@
             :filters="filtersValues"
             @input="choceFilterValue"
             v-model="selectedFilterOption"
-          
+                   
           />
           
         </div>
@@ -58,11 +58,11 @@
         </div>
 
         <div class="filters__case">
-          <div v-for="filter of activeFilters"
+          <div v-for="filter of activeFilters" 
             :key="filter.id"
             :class="filter.active ? 'active':''"
             :style="{'background-color':filter.color}"
-            class="show show_green"
+            class="show show_green active"
           >
             <i class="form__fa-img fa fa-close"
               @click="deleteFilter(filter.atr)"
@@ -127,7 +127,7 @@ export default {
           }
         })
         this.selectedFilterOption = this.filtersValues[0]
-        this.requestFilter = this.filtersValues
+        // this.requestFilter = this.filtersValues
         this.activeAddBtn=true
       // this.selectedFilterOption = options.name
       console.log('clickOptions1', this.selectedFilterOption)
@@ -162,43 +162,55 @@ export default {
 
     // },
     choceFilterValue(value) {
-      console.log('choceFilterValue', value)
-      console.log('choceFilterValue2', this.requestFilter)
-      const colorId = this.getRandomInRange(0,11)
-      const color = this.colorsForFilters[colorId]
+      // console.log('choceFilterValue', value)
+      // console.log('choceFilterValue2', this.selectedFilterOption)
+      // const colorId = this.getRandomInRange(0,11)
+      // const color = this.colorsForFilters[colorId]
       
-      this.requestFilter = this.requestFilter.map( function(fil) {
-        return {
-          atr: fil.atr,
-          value: value.name,
-          active: true,
-          color: color
-        }
-      })
-      console.log('choceFilterValue3', this.requestFilter)
+      // this.requestFilter = this.requestFilter.map( function(fil) {
+      //   return {
+      //     atr: fil.atr,
+      //     value: value.name,
+      //     active: true,
+      //     color: color
+      //   }
+      // })
+      console.log('choceFilterValue3', this.requestFilter, value)
       // this.activeAddBtn=true
       
     },
     addFilter() {
-      // for (let filter of this.requestFilter) {
-        console.log('test6', typeof this.requestFilter)
-        if (!this.activeFilters.length && this.requestFilter) {
-          
-          this.activeFilters.push(this.requestFilter[0])
-          this.showActiveFilters=true
-          console.log('come')
-                
-        }  else if (this.activeFilters) {
-          
-          console.log('else if', this.activeFilters.filter(item => item.atr == this.requestFilter[0].atr))
-          
-          if (this.activeFilters.filter(item => item.atr == this.requestFilter[0].atr) == false) {
-              this.activeFilters.push(this.requestFilter[0])
-          } else {
-            return this.activeFilters
-          }
+      console.log('typerr',  this.activeFilters.indexOf(this.selectedFilterOption) )
+      if (this.activeFilters.indexOf(this.selectedFilterOption) !== -1) {
+        return this.activeFilters
+      } else {
+        this.activeFilters.push(this.selectedFilterOption)
+      }
+      this.showActiveFilters=true
+     
+        
+      
 
-        }
+
+      // for (let filter of this.requestFilter) {
+        // console.log('test6', typeof this.requestFilter)
+        // if (!this.activeFilters.length && this.requestFilter) {
+          
+        //   this.activeFilters.push(this.requestFilter[0])
+        //   this.showActiveFilters=true
+        //   console.log('come')
+                
+        // }  else if (this.activeFilters) {
+          
+        //   console.log('else if', this.activeFilters.filter(item => item.atr == this.requestFilter[0].atr))
+          
+        //   if (this.activeFilters.filter(item => item.atr == this.requestFilter[0].atr) == false) {
+        //       this.activeFilters.push(this.requestFilter[0])
+        //   } else {
+        //     return this.activeFilters
+        //   }
+
+        // }
       
       this.$emit('filterValue', this.activeFilters)
       console.log('test7', this.activeFilters)

@@ -1,17 +1,19 @@
 <template>
   <div class="select-block" >
     
-    <div 
-      class="select-block__select"
+    <div class="select-block__select"
       v-if="filters"  
-      @click="openOptions = !openOptions" 
+      @click="toogleShowChoices"
+      @focus="focusHandler"
+      @blur="blurHandler"
+      
       
     >
       <span class="select-block__text" >{{getCurrentChoice}}</span>
       <i class="select-block__icon fa fa-caret-down"></i>
     </div>  
     <div class="select-block__options" 
-      v-if="openOptions"
+      v-if="showChoices"
     >
       <div class="select-block__option"
         v-for="(filter) in filters"
@@ -22,6 +24,7 @@
       {{filter.name}} 
       </div>
     </div>
+    <div class="select-block__clode-area"></div>
   </div>
 </template>
 
@@ -29,7 +32,7 @@
 export default {
   data: () => ({
     checkSelectName: '',
-    openOptions: false,
+    showChoices: false,
   }),
   props: {
     value: {
@@ -63,6 +66,21 @@ export default {
     },
   },
   methods: {
+    toogleShowChoices: function () {
+      this.showChoices = !this.showChoices
+    },
+    blurHandler: function (e) {
+      console.log('blur')
+      this.$emit("blur", e)
+      this.toogleShowChoices()
+      
+    },
+    focusHandler: function (e) {
+      console.log('focus')
+      this.$emit("focus", e)
+      this.toogleShowChoices()
+      
+    },
     clickOptions(options) {
       // this.usernameInput = filter.name
       this.$emit("input", options)
@@ -101,6 +119,18 @@ export default {
     // padding: 2px 35px 2px 10px;
     height: 100%;
     width: 100%;
+  }
+
+  &__close-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+    background-color: grey;
+    opacity: 0.5;
   }
 
   &__text {

@@ -35,6 +35,7 @@ export default {
   },
   getters: {
     allRows(state) {
+      console.log('getterallrows')
       return state.rows
     },
     allFilters(state) {

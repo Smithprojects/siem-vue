@@ -15,7 +15,9 @@
         :tablecolumns="tablecolumns"
         :rows="allRows"
         :meta="allMeta"
+        :activeFilters="activeFilters"
         :placeholder="'Filters Name-1'"
+        @checkPage="checkPage"
         
       />
     </div>
@@ -45,8 +47,9 @@ export default {
         {name: 'dest_port', label: 'Dest port'},
         {name: 'program', label: 'Program'},
       ],
-      rows: [],
-      req:{}
+      // rows: [],
+      requestParams:{},
+      activeFilters: [],
     };
   },
   computed: mapGetters(["allRows", "allFilters", "allMeta"]),
@@ -57,16 +60,23 @@ export default {
   // },
   methods: {
     ...mapActions(["fetchData"]),
-    async filterValue(activeFilters) {
+    filterValue(activeFilters) {
       console.log('Events', activeFilters)
-      this.req = {}
+      this.requestParams = {}
+      this.activeFilters = activeFilters
+      // const req = {}
       activeFilters.forEach(element => {
-        this.req[element.atr] = element.name
+        this.requestParams[element.atr] = element.name
       });
-      this.fetchData(this.req);
-      console.log('req', this.req)
+      this.fetchData(this.requestParams);
+      console.log('req', this.requestParams)
       
     },
+    checkPage(numpage) {
+      this.requestParams.page = numpage
+      this.fetchData(this.requestParams);
+      console.log('checkpages', this.requestParams)
+    }
     
   },
   async mounted() {

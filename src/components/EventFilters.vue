@@ -5,40 +5,27 @@
       <form class="search__form form" action="" method="">
         <div class="form__wrapper fa fa-search">
           <input class="form__input" type="saerch" placeholder="search">
-          <i v-on:click="btn = !btn" class="search__wrapper__cursor form__fa-img form__fa-img_green fa fa-sliders"></i>
+          <i v-on:click="hasOpenSelectBlock = !hasOpenSelectBlock" class="search__wrapper__cursor form__fa-img form__fa-img_green fa fa-sliders"></i>
         </div>
       </form>
     </div>
     
-    <div v-if="btn" class="filtering__filters ">
+    <div v-if="hasOpenSelectBlock" class="filtering__filters ">
       
       <div class="filters__add filters">
         <div class="filters__head">
           <p class="filters__title">Add filter:</p>
         </div>
         <div class="filters__case">
-          <!-- <Filters
-            :filters="allFilters"
-            :placeholder="'Make choice'"
-            
-            @change="choceFilterName"
-          />
-          <Filters
-            :filters="filtersValues"
-            :fil="false"
-            @change="choceFilterValue"
-          /> -->
+         
           <select-filters
             :filters="allFilters"
             @input="clickOptions"
             v-model="selectedFilter"
-          
           />
           <select-filters
             :filters="filtersValues"
-            @input="choceFilterValue"
             v-model="selectedFilterOption"
-                   
           />
           
         </div>
@@ -58,11 +45,11 @@
         </div>
 
         <div class="filters__case">
-          <div v-for="filter of activeFilters" 
+          <div class="show" 
+            v-for="filter of activeFilters" 
             :key="filter.id"
-            :class="filter.active ? 'active':''"
             :style="{'background-color':filter.color}"
-            class="show show_green active"
+            
           >
             <i class="form__fa-img fa fa-close"
               @click="deleteFilter(filter.atr)"
@@ -82,14 +69,11 @@
 </template>
 
 <script>
-// import Filters from './Filters';
 import SelectFilters from './SelectFilters';
-// import FilterOptions from  './FilterOptions';
+
 export default {
   name : 'search',
   components : {
-      // FilterOptions,
-    // Filters,
     SelectFilters
   },
   props: {
@@ -105,13 +89,10 @@ export default {
     return{
       selectedFilter: null,
       selectedFilterOption: null,
-      btn : false,
+      hasOpenSelectBlock : false,
       showActiveFilters: false,
       activeAddBtn: false,
-      filterModel : [],
-      filters : [],
       filtersValues : [],
-      requestFilter : [],
       activeFilters: [],
       colorsForFilters:['#5F9EA0', '#4682B4', '#B0C4DE', '#B0E0E6', '#87CEEB', '#87CEFA', '#6495ED', '#8FBC8F', '#20B2AA', '#A9A9A9', '#778899', '#808080']
     }
@@ -119,117 +100,49 @@ export default {
   methods: {
     clickOptions(options) {
       
-        console.log('clickOptions', options)
-        this.filtersValues = options.filters.map(function(val){
-          return {
-            atr: options.atr,
-            name: val
-          }
-        })
-        this.selectedFilterOption = this.filtersValues[0]
-        // this.requestFilter = this.filtersValues
-        this.activeAddBtn=true
-      // this.selectedFilterOption = options.name
+      console.log('clickOptions', options)
+      this.filtersValues = options.filters.map(function(val){
+        return {
+          atr: options.atr,
+          name: val
+        }
+      })
+      this.selectedFilterOption = this.filtersValues[0]
+      this.activeAddBtn = true
+    
       console.log('clickOptions1', this.selectedFilterOption)
-      
-      
-      
     },
     onSubmit() {
       // v-on:click="filter.active = !filter.active"
       console.log("filtre:")
 
     },
-    // choceFilterName(value) {
-
-    //   const makeArrayFromAllFilters = Object.values(this.allFilters)
-    //     .filter( function (fil) {
-    //       if (fil.atr==value) {
-    //         // fil.active = true
-    //         return fil
-    //       }
-    //     })
-    //     .map(function(fil){
-    //       return {
-    //         atr:fil.atr,
-    //         filters: fil.filters
-    //       }
-    //     })
-
-    //   this.filtersValues = makeArrayFromAllFilters[0].filters
-    //   this.requestFilter = makeArrayFromAllFilters
-      
-
-    // },
-    choceFilterValue(value) {
-      // console.log('choceFilterValue', value)
-      // console.log('choceFilterValue2', this.selectedFilterOption)
-      // const colorId = this.getRandomInRange(0,11)
-      // const color = this.colorsForFilters[colorId]
-      
-      // this.requestFilter = this.requestFilter.map( function(fil) {
-      //   return {
-      //     atr: fil.atr,
-      //     value: value.name,
-      //     active: true,
-      //     color: color
-      //   }
-      // })
-      console.log('choceFilterValue3', this.requestFilter, value)
-      // this.activeAddBtn=true
-      
-    },
     addColor(value) {
       const colorId = this.getRandomInRange(0,11)
       const color = this.colorsForFilters[colorId]
-       return {
-          atr: value.atr,
-          value: value.name,
-          color: color
-        }
+      
+      return {
+        atr: value.atr,
+        name: value.name,
+        color: color
+      }
     },
 
     addFilter() {
-      console.log('typerr',  this.activeFilters.indexOf(this.selectedFilterOption) )
-      if (this.activeFilters.indexOf(this.selectedFilterOption) !== -1) {
+      
+      if (this.activeFilters.find(filter => filter.name == this.selectedFilterOption.name)) {
         return this.activeFilters
       } else {
         this.activeFilters.push(this.addColor(this.selectedFilterOption))
       }
-      this.showActiveFilters=true
-     
-        
-      
-
-
-      // for (let filter of this.requestFilter) {
-        // console.log('test6', typeof this.requestFilter)
-        // if (!this.activeFilters.length && this.requestFilter) {
-          
-        //   this.activeFilters.push(this.requestFilter[0])
-        //   this.showActiveFilters=true
-        //   console.log('come')
-                
-        // }  else if (this.activeFilters) {
-          
-        //   console.log('else if', this.activeFilters.filter(item => item.atr == this.requestFilter[0].atr))
-          
-        //   if (this.activeFilters.filter(item => item.atr == this.requestFilter[0].atr) == false) {
-        //       this.activeFilters.push(this.requestFilter[0])
-        //   } else {
-        //     return this.activeFilters
-        //   }
-
-        // }
-      
+      this.showActiveFilters = true
       this.$emit('filterValue', this.activeFilters)
       console.log('test7', this.activeFilters)
     },
     deleteFilter(atr) {
       
       for (let filter of this.activeFilters) {
-        if (filter.atr==atr) {
-          // filter.active = false
+        if (filter.atr == atr) {
           this.activeFilters.splice(this.activeFilters.findIndex(item => item.atr === filter.atr), 1)
           
           if (!this.activeFilters.length) {
@@ -326,16 +239,7 @@ export default {
   display: flex;
   padding-top: 10px;
   transition:  all 0.5s ease;
-  // flex-wrap: wrap;
-  /* animation: filterOpacityOff 2s linear; */
-  /* opacity: 0; */
-  /* transition: all 1s ease; */
-  /* visibility: hidden; */
-  /* animation: filterOpacityOn 2s linear; */
-    /* visibility: visible !important;
-    display: none; */
-    
-
+ 
   &__head {
     color: #1a87a8;
     font-size: 15px;
@@ -384,14 +288,12 @@ export default {
   margin: 5px 5px 5px 0;
   font-size: 14px;
   position: relative;
-  display: none;
+  display: flex;
   border: 1px solid #06303d;
 
-  &_green:hover {
-    /* box-shadow: 0 10px 30px rgba(233,48,161,0.3); */
-    transition:  all 0.5s ease;
-    background: transparent;
-    border: 2px solid #077233;
+  &:hover {
+    transition: all 1s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 24px rgba(0, 0, 0, 0.22);
   }
 
   &_purple:hover {
@@ -419,16 +321,6 @@ export default {
   }
 }
 
-.active {
-  /* animation: filterOpacityOn 2s linear;
-    /* animation: filterOpacityOn 2s linear;
-    visibility: visible !important; */
-    /* visibility: collapse; */
-    /* transition: all 3s ease; */
-    /* display: none !important;  */
-    display: flex ;
-
-}
 
 @keyframes filterOpacityOn {
      /* 0%{

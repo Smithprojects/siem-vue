@@ -4,10 +4,6 @@
     <div class="select-block__select"
       v-if="filters"  
       @click="toogleShowChoices"
-      @focus="focusHandler"
-      @blur="blurHandler"
-      
-      
     >
       <span class="select-block__text" >{{getCurrentChoice}}</span>
       <i class="select-block__icon fa fa-caret-down"></i>
@@ -24,7 +20,10 @@
       {{filter.name}} 
       </div>
     </div>
-    <div class="select-block__clode-area"></div>
+    <div class="select-block__close-area"
+      v-if="showChoices"
+      @click="toogleShowChoices"
+    ></div>
   </div>
 </template>
 
@@ -69,23 +68,9 @@ export default {
     toogleShowChoices: function () {
       this.showChoices = !this.showChoices
     },
-    blurHandler: function (e) {
-      console.log('blur')
-      this.$emit("blur", e)
+    clickOptions(filter) {
+      this.$emit("input", filter)
       this.toogleShowChoices()
-      
-    },
-    focusHandler: function (e) {
-      console.log('focus')
-      this.$emit("focus", e)
-      this.toogleShowChoices()
-      
-    },
-    clickOptions(options) {
-      // this.usernameInput = filter.name
-      this.$emit("input", options)
-      this.openOptions = false
-      console.log('filterrr', options)
     }
   }
 }
@@ -101,13 +86,13 @@ export default {
   font-size: 14px;
 
   &:hover {
-    // border: 1px solid white;
     transition: all 1s ease;
-    // border-radius: 5px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 24px rgba(0, 0, 0, 0.22);
   }
 
   &__select {
+    height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -115,10 +100,7 @@ export default {
     cursor: pointer;
     border-radius: 5px;
     background-color: #06303d;
-    // color: rgba(255, 255, 255, 0.863);
-    // padding: 2px 35px 2px 10px;
-    height: 100%;
-    width: 100%;
+    padding: 2px 35px 2px 10px;
   }
 
   &__close-area {
@@ -129,8 +111,6 @@ export default {
     width: 100%;
     height: 100%;
     cursor: default;
-    background-color: grey;
-    opacity: 0.5;
   }
 
   &__text {
@@ -154,6 +134,7 @@ export default {
     right: 0;
     top: 30px;
     width: 100%;
+    z-index: 15;
   }
 
   &__option {
@@ -162,9 +143,7 @@ export default {
 
     &:hover {
       background-color: rgb(32, 178, 170);
-      // border-radius: 5px;
     }
-    
   }
 }
 

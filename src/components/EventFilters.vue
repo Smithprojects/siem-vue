@@ -179,12 +179,22 @@ export default {
       // this.activeAddBtn=true
       
     },
+    addColor(value) {
+      const colorId = this.getRandomInRange(0,11)
+      const color = this.colorsForFilters[colorId]
+       return {
+          atr: value.atr,
+          value: value.name,
+          color: color
+        }
+    },
+
     addFilter() {
       console.log('typerr',  this.activeFilters.indexOf(this.selectedFilterOption) )
       if (this.activeFilters.indexOf(this.selectedFilterOption) !== -1) {
         return this.activeFilters
       } else {
-        this.activeFilters.push(this.selectedFilterOption)
+        this.activeFilters.push(this.addColor(this.selectedFilterOption))
       }
       this.showActiveFilters=true
      
@@ -251,6 +261,11 @@ export default {
   text-align: center;
   padding: 10px;
   max-height: 165px;
+
+  // &__filters {
+  //   // transition: 1s;
+  //   // transform: translateY(30px)
+  // }
 
   .search {
 
@@ -319,6 +334,7 @@ export default {
   /* animation: filterOpacityOn 2s linear; */
     /* visibility: visible !important;
     display: none; */
+    
 
   &__head {
     color: #1a87a8;

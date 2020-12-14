@@ -10,7 +10,9 @@
                 STATISTIC
             </li>
             <li>
-                EVENTS
+                <router-link to="/events" tag="li">
+                  EVENTS
+                </router-link>
             </li>
             <li>
                CORRELATION
@@ -88,6 +90,7 @@ export default {
     li {
       margin: auto;
       text-align: center;
+      cursor: pointer;
 
       &:hover {
         color: #1a87a8;

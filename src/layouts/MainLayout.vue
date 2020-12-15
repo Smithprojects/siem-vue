@@ -1,38 +1,23 @@
 <template>
   <div class="main">
     <nav class="main__nav">
-        <div class="main__logo logo">
-            <img class="logo__img" src="../assets/logo.png" alt="" />
-            <p class="logo__text">SIEM SYSTEM</p>
-        </div>
-        <ul class="main__menu">
-            <li>
-                STATISTIC
-            </li>
-            <li>
-                <router-link to="/events" tag="li">
-                  EVENTS
-                </router-link>
-            </li>
-            <li>
-               CORRELATION
-            </li>
-            <li>
-               INCIDENTS
-            </li>
-            <li>
-                SIMPTOMS
-            </li>
-            <li>
-                VULNERABILITY
-            </li>
-            <li>
-                SETTINGS
-            </li>
-            <li>
-               log out
-            </li>
-        </ul>
+      <div class="main__logo logo">
+          <img class="logo__img" src="../assets/logo.png" alt="" />
+          <p class="logo__text">SIEM SYSTEM</p>
+      </div>
+      <ul class="main__menu">
+        <router-link
+          v-for="link in links"
+          :key="link.url"
+          tag="li"
+          active-class="active-link"
+          :to="link.url"
+          :exact="link.exact"
+        >
+          <a href="#" class="main__link">{{link.title}}</a>  
+        </router-link>
+    
+      </ul>
     </nav>
     <router-view />
   </div>
@@ -41,6 +26,18 @@
 <script>
 export default {
   name: 'main-layout',
+  data: () => ({
+    links: [
+      {title: 'STATISTIC', url: '/', exact: true},
+      {title: 'EVENTS', url: '/events'},
+      {title: 'CORRELATION', url: '/correlation'},
+      {title: 'INCIDENTS', url: '/incidents'},
+      {title: 'SIMPTOMS', url: '/simptoms'},
+      {title: 'VULNERABILITY', url: '/vurnerability'},
+      {title: 'SETTINGS', url: '/settings'},
+      {title: 'log out', url: '/login'}
+    ]
+  }),
 
 }
 </script>
@@ -90,19 +87,22 @@ export default {
     li {
       margin: auto;
       text-align: center;
-      cursor: pointer;
-
-      &:hover {
-        color: #1a87a8;
-      }
     }
-    
-    // a {
-    //   color: white;
-    //   margin: 10px;
-    //   transition: all 0.2s ease;
-     
-    // }
+  }
+  
+  &__link {
+    color: white;
+
+    &:hover {
+      color: #1a87a8;
+    }
+  }
+
+  .active-link {
+
+    .main__link {
+      color: #1a87a8;
+    }
   }
 }
 

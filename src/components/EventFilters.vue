@@ -5,7 +5,12 @@
       <form class="search__form form" action="" method="">
         <div class="form__wrapper fa fa-search">
           <input class="form__input" type="saerch" placeholder="search">
-          <i v-on:click="hasOpenSelectBlock = !hasOpenSelectBlock" class="search__wrapper__cursor form__fa-img form__fa-img_green fa fa-sliders"></i>
+         
+        </div>
+        <div class="form__btn"
+          v-on:click="hasOpenSelectBlock = !hasOpenSelectBlock"
+        >
+          <i  class="fa fa-sliders"></i>
         </div>
       </form>
     </div>
@@ -175,23 +180,19 @@ export default {
   padding: 10px;
   max-height: 165px;
 
-  // &__filters {
-  //   // transition: 1s;
-  //   // transform: translateY(30px)
-  // }
-
   .search {
 
     .form {
       display: flex;
       justify-content: flex-end;
+      align-items: center;
 
       &__wrapper {
         position: relative;
 
         &::before {
           content: '\f002';
-          right: 55px;
+          right: 20px;
           position: absolute;
           line-height: 37px;
           color: #1a87a8;
@@ -206,7 +207,7 @@ export default {
         border-radius: 5px;
         padding: 10px 20px;
         box-sizing: border-box;
-        margin-right: 40px;
+        margin-right: 10px;
         
         &:hover {
           border: 1px solid #1a87a8;
@@ -215,21 +216,20 @@ export default {
         }
       }
 
-      &__fa-img {
-        position:absolute;
-        top: 0;
-        bottom: 0;
-        right: 8px;
-        margin: auto;
-        height: 50%;
-        font-size: 13px;
+      &__btn {
+        font-size: 23px;
+        color: #1a87a8;
         cursor: pointer;
-
-        &_green {
+ 
+        &:hover {
           color: #0e4050;
-          top: -9px;
-          font-size: 23px;
         }
+
+        &:active {
+          color: #06303d;
+        }
+
+
       }
     }
   }

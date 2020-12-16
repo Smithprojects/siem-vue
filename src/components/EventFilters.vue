@@ -3,11 +3,15 @@
     
     <div class="filtering__search search">
       <form class="search__form form" action="" method="">
-        <div class="form__wrapper fa fa-search">
+        <div class="form__wrapper">
           <input class="form__input" type="saerch" placeholder="search">
-         
+          <div class="form__search-btn"
+            @click="onSubmit"
+          >
+            <i  class="fa fa-search"></i>
+          </div>
         </div>
-        <div class="form__btn"
+        <div class="form__open-filter-btn"
           v-on:click="hasOpenSelectBlock = !hasOpenSelectBlock"
         >
           <i  class="fa fa-sliders"></i>
@@ -54,13 +58,16 @@
             v-for="filter of activeFilters" 
             :key="filter.id"
             :style="{'background-color':filter.color}"
-            
           >
-            <i class="form__fa-img fa fa-close"
-              @click="deleteFilter(filter.atr)"
-            ></i>
-            {{filter.atr}} {{filter.value}}
+            <p class="show__text">{{filter.atr}} {{filter.value}}</p> 
+            <div class="show__close-btn">
+              <i class="fa fa-close"
+                @click="deleteFilter(filter.atr)"
+              >
+              </i>
+            </div>
           </div>
+         
         </div>
         <div class="filters__btn"
           @click="deleteAllFilters"
@@ -119,7 +126,7 @@ export default {
     },
     onSubmit() {
       // v-on:click="filter.active = !filter.active"
-      console.log("filtre:")
+      console.log("onSubmit:")
 
     },
     addColor(value) {
@@ -189,15 +196,6 @@ export default {
 
       &__wrapper {
         position: relative;
-
-        &::before {
-          content: '\f002';
-          right: 20px;
-          position: absolute;
-          line-height: 37px;
-          color: #1a87a8;
-
-        }
       }
 
       &__input {
@@ -216,20 +214,35 @@ export default {
         }
       }
 
-      &__btn {
-        font-size: 23px;
+      &__search-btn {
+        position: absolute;
+        top: 0; 
+        left: 180px;
+        line-height: 37px;
         color: #1a87a8;
         cursor: pointer;
- 
+
         &:hover {
-          color: #0e4050;
+          color: #34C6CD;
         }
 
         &:active {
           color: #06303d;
         }
+      }
 
+      &__open-filter-btn {
+        font-size: 23px;
+        color: #1a87a8;
+        cursor: pointer;
+ 
+        &:hover {
+          color:#34C6CD;
+        }
 
+        &:active {
+          color: #06303d;
+        }
       }
     }
   }
@@ -281,15 +294,30 @@ export default {
 }
 
 .show {
-  cursor: pointer;
-  border-radius: 5px;
-  background-color: #06303d;
-  padding: 2px 35px 2px 10px;
-  margin: 5px 5px 5px 0;
-  font-size: 14px;
-  position: relative;
   display: flex;
+  align-items: center;
+  font-size: 14px;
+  padding: 2px 10px;
+  margin-right: 5px;
+  background-color: #06303d;
+  border-radius: 5px;
   border: 1px solid #06303d;
+
+  &__text {
+    margin-right: 10px;
+  }
+
+  &__close-btn {
+    cursor: pointer;
+
+    &:hover {
+      color: #0000005d;
+    }
+
+    &:active {
+      color: #06303d;
+    }
+  }
 
   &:hover {
     transition: all 1s ease;
@@ -301,23 +329,6 @@ export default {
     transition:  all 0.5s ease;
     background: transparent;
     border: 2px solid #6957b8;
-  }
-}
-
-.form__fa-img {
-  position:absolute;
-  top: 0;
-  bottom: 0;
-  right: 8px;
-  margin: auto;
-  height: 50%;
-  font-size: 13px;
-  cursor: pointer;
-
-  &_green {
-    color: #0e4050;
-    top: -9px;
-    font-size: 23px;
   }
 }
 
